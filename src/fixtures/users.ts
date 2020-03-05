@@ -1,6 +1,6 @@
 import { IUser } from '../types/types';
 
-export const users: Array<IUser> = [
+export const users: IUser[] = [
   {
     _id: 'u0001',
     img: '/images/jkeating.jpg',

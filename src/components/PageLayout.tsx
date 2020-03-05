@@ -3,10 +3,11 @@ import React, { ReactNode } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 
 import Div from './Div';
+import Menu from './Menu/Menu';
 import Header, { IHeaderProps } from './Header/Header';
 
 type IPageLayoutProps = IHeaderProps & {
-  children: ReactNode | Array<ReactNode>;
+  children: ReactNode | ReactNode[];
 };
 
 const PageLayout: React.FC<IPageLayoutProps> = ({ children, subtitle, title }) => {
@@ -15,11 +16,16 @@ const PageLayout: React.FC<IPageLayoutProps> = ({ children, subtitle, title }) =
   return (
     <Div
       background={theme.palette.background.default}
-      color={theme.palette.text.main}
+      color={theme.palette.text.primary}
+      flex
+      flexColumn
       h="100vh"
     >
       <Header title={title} subtitle={subtitle} />
-      {children}
+      <Div flex flexGrow>
+        <Menu />
+        {children}
+      </Div>
     </Div>
   );
 };

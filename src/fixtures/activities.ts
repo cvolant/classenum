@@ -1,6 +1,6 @@
 import { IActivity } from '../types/types';
 
-export const activities: Array<IActivity> = [
+export const activities: IActivity[] = [
   {
     _id: 'a0001',
     date: new Date(1583405100951),

@@ -1,6 +1,6 @@
 import { IMessage } from '../types/types';
 
-export const messages: Array<IMessage> = [
+export const messages: IMessage[] = [
   {
     _id: 'm0001',
     content: 'Bonne séance à tous !',

@@ -21,7 +21,6 @@ const StyledMuiAvatar = styled(MuiAvatar)<IStyledAvatarProps>`
       medium: 5,
       large: 7,
     }[size]);
-    console.log('From StyledMuiAvatar. wh:', wh);
     return `
       height: ${wh}px;
       width: ${wh}px;

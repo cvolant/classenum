@@ -27,13 +27,13 @@ export type IActivity = {
 type ITeacher = {
   role: 'teacher';
   status?: 'busy' | 'available';
-  subjects: ISubject | Array<ISubject>;
+  subjects: ISubject | ISubject[];
 };
 type IStudent = {
   role: 'student';
   status?: 'fine' | 'needs help';
-  activities?: Array<IId>;
-  marks?: Record<ISubject, Array<number>>;
+  activities?: IId[];
+  marks?: Record<ISubject, number[]>;
 };
 type IUserRoles = ITeacher | IStudent;
 
@@ -41,6 +41,6 @@ export type IUser = IUserRoles & {
   _id: IId;
   name: string;
   img?: string;
-  messages?: Array<IId>;
+  messages?: IId[];
   screenView?: string;
 };
