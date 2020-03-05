@@ -1,18 +1,24 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { StylesProvider, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from 'styled-components';
+import { StylesProvider, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../theme';
+import 'typeface-roboto';
 
 import Routes from './Routes';
 
+console.log('From App. theme:', theme);
+
 const App: React.FC = () => (
   <StylesProvider injectFirst>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </ThemeProvider>
+    <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </ThemeProvider>
+    </MuiThemeProvider>
   </StylesProvider>
 );
 

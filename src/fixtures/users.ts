@@ -3,7 +3,7 @@ import { IUser } from '../types/types';
 export const users: Array<IUser> = [
   {
     _id: 'u0001',
-    img: '../assets/images/jkeating.jpg',
+    img: '/images/jkeating.jpg',
     messages: [
       'm0001',
     ],
@@ -21,7 +21,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0003',
     activities: ['a0001', 'a0002'],
-    img: '../assets/images/tanderson.jpg',
+    img: '/images/tanderson.jpg',
     messages: [
       'm0001',
     ],
@@ -33,7 +33,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0004',
     activities: ['a0001', 'a0002'],
-    img: '../assets/images/nperry.jpg',
+    img: '/images/nperry.jpg',
     messages: [
       'm0001',
     ],
@@ -45,7 +45,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0005',
     activities: ['a0001'],
-    img: '../assets/images/koverstreet.jpg',
+    img: '/images/koverstreet.jpg',
     messages: [
       'm0001',
     ],
@@ -57,7 +57,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0006',
     activities: ['a0001', 'a0002', 'a0004'],
-    img: '../assets/images/cdalton.jpg',
+    img: '/images/cdalton.jpg',
     messages: [
       'm0001',
     ],
@@ -69,7 +69,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0007',
     activities: ['a0001', 'a0003', 'a0005'],
-    img: '../assets/images/rcameron.jpg',
+    img: '/images/rcameron.jpg',
     messages: [
       'm0001',
     ],
@@ -81,7 +81,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0008',
     activities: ['a0001', 'a0003'],
-    img: '../assets/images/smeeks.jpg',
+    img: '/images/smeeks.jpg',
     messages: [
       'm0001',
     ],
@@ -93,7 +93,7 @@ export const users: Array<IUser> = [
   {
     _id: 'u0009',
     activities: ['a0001', 'a0003'],
-    img: '../assets/images/gpitts.jpg',
+    img: '/images/gpitts.jpg',
     messages: [
       'm0001',
     ],

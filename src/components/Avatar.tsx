@@ -3,29 +3,30 @@ import React from 'react';
 import styled from 'styled-components';
 import MuiAvatar from '@material-ui/core/Avatar';
 
+import { IUser } from '../types/types';
+
 type IStyledAvatarProps = {
   size?: 'small' | 'medium' | 'large';
-  color?: string;
+  color?: 'primary' | 'secondary' | 'info' | 'error' | 'success';
 };
 
 type IAvatarProps = IStyledAvatarProps & {
-  user: {
-    name: string;
-    img?: string;
-  };
+  user: IUser;
 };
 
 const StyledMuiAvatar = styled(MuiAvatar)<IStyledAvatarProps>`
-  ${({ color, size = 'medium', theme }): string => {
+  ${({ color = 'primary', size = 'medium', theme }): string => {
     const wh = theme.spacing({
       small: 3,
       medium: 5,
       large: 7,
     }[size]);
+    console.log('From StyledMuiAvatar. wh:', wh);
     return `
-      height: ${wh};
-      width: ${wh};
-      ${color ? `color: ${color};` : ''}
+      height: ${wh}px;
+      width: ${wh}px;
+      background-color: ${theme.palette[color].main};
+      color: ${theme.palette[color].contrastText};
     `;
   }}
 `;
@@ -40,9 +41,7 @@ const Avatar: React.FC<IAvatarProps> = ({
     color={color}
     size={size}
     src={img}
-  >
-    {!img ? name.split(' ').slice(0, 2).map((word) => word[0]) : undefined}
-  </StyledMuiAvatar>
+  />
 );
 
 export default Avatar;
