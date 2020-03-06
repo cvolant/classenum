@@ -22,6 +22,7 @@ const PageLayout: React.FC<IPageLayoutProps> = ({
       flex
       flexColumn
       h="100vh"
+      overflow="hidden"
     >
       <Header title={title} subtitle={subtitle} />
       <Div flex flexGrow>
