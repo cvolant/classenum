@@ -8,10 +8,16 @@ type IFixedMenuProps = {
 };
 
 const StyledPaper = styled(Paper)`
-  padding: ${({ theme }): string => theme.spacing(1, 2)};
-  display: flex;
-  flex-direction: column;
-  color: ${({ theme }): string => theme.palette.text.secondary}
+  ${({ theme }): string => `
+    padding: ${theme.spacing(1, 2)};
+    display: flex;
+    flex-direction: column;
+    color: ${theme.palette.text.secondary};
+
+    & .MuiButton-label {
+      white-space: nowrap;
+    }
+  `};
 `;
 
 const FixedMenu: React.FC<IFixedMenuProps> = ({ children }) => (

@@ -13,18 +13,18 @@ export type IMenuProps = {
 const Menu: React.FC<IMenuProps> = ({ menuItems }) => {
   const screen = useScreen();
 
+  if (screen.mdup) {
+    return (
+      <FixedMenu>
+        <MenuContent menuItems={menuItems} />
+      </FixedMenu>
+    );
+  }
   return (
-    <>
-      {screen.mdup ? (
-        <FixedMenu>
-          <MenuContent menuItems={menuItems} />
-        </FixedMenu>
-      ) : (
-        <SlidingMenu>
-          <MenuContent menuItems={menuItems} center />
-        </SlidingMenu>
-      )}
-    </>
+    <SlidingMenu>
+      <MenuContent menuItems={menuItems} center />
+    </SlidingMenu>
   );
 };
+
 export default Menu;

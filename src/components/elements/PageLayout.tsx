@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 
 import Div from './Div';
-import Menu, { IMenuProps } from './Menu/Menu';
-import Header, { IHeaderProps } from './Header/Header';
+import Menu, { IMenuProps } from '../Menu/Menu';
+import Header, { IHeaderProps } from '../Header/Header';
 
 type IPageLayoutProps = IHeaderProps & Partial<IMenuProps> & {
   children: ReactNode | ReactNode[];
@@ -25,7 +25,7 @@ const PageLayout: React.FC<IPageLayoutProps> = ({
       overflow="hidden"
     >
       <Header title={title} subtitle={subtitle} />
-      <Div flex flexGrow>
+      <Div flex flexGrow minHeight="0">
         {menuItems && <Menu menuItems={menuItems} />}
         {children}
       </Div>

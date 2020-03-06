@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useTheme } from '@material-ui/core/styles';
 import Search from '@material-ui/icons/Search';
 
-import Div from '../components/Div';
+import Div from '../components/elements/Div';
 
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../components/elements/PageLayout';
 
 const Magnifier = styled(Search)`
   width: 100%;

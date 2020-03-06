@@ -11,9 +11,9 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import useUser from '../../hooks/useUser';
 import useScreen from '../../hooks/useScreen';
-import Div from '../Div';
-import Logo from '../Logo';
-import Avatar from '../Avatar';
+import Div from '../elements/Div';
+import Logo from '../elements/Logo';
+import Avatar from '../elements/Avatar';
 import UserMenu from './UserMenu';
 
 const StyledTypography = styled(Typography)<TypographyProps>`

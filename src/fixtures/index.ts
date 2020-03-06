@@ -1,4 +1,4 @@
-import activities from './activities';
+import activities, { getActivity } from './activities';
 import messages from './messages';
 import users from './users';
 import { IActivity, IMessage, IUser } from '../types/types';
@@ -23,6 +23,7 @@ const getFixtureAsync = <T extends keyof IFixtures>(
 
 export {
   getFixtureAsync,
+  getActivity,
   activities,
   messages,
   users,

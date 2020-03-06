@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import Div from '../Div';
+import Div from '../elements/Div';
 
 type IMenuButtonProps = {
   onClick: () => void;
@@ -36,16 +36,24 @@ const MenuButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) =
       <StyledDiv
         background="transparent"
         borderRadius="0 0 50%;"
-        boxShadow={`25px 25px ${theme.palette.background.paper}`}
+        boxShadow={`25px 25px ${upside || !onDrawer
+          ? theme.palette.secondary.main
+          : theme.palette.background.paper}`}
         color="inherit"
         h="50px"
         w="50px"
         noPointerEvents
       />
       <Div
-        background={theme.palette.background.paper}
+        background={upside || !onDrawer
+          ? theme.palette.secondary.main
+          : theme.palette.background.paper}
         borderRadius="50% 50% 0 0"
-        color="inherit"
+        boxShadow={!onDrawer ? theme.shadows[5] : undefined}
+        color={upside || !onDrawer
+          ? theme.palette.secondary.contrastText
+          : 'inherit'}
+        transition={theme.transitions.create(['background-color', 'color'])}
         zIndex={1}
       >
         <IconButton color="inherit" onClick={onClick}>
@@ -55,7 +63,9 @@ const MenuButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) =
       <StyledDiv
         background="transparent"
         borderRadius="0 0 0 50%;"
-        boxShadow={`-25px 25px ${theme.palette.background.paper}`}
+        boxShadow={`-25px 25px ${upside || !onDrawer
+          ? theme.palette.secondary.main
+          : theme.palette.background.paper}`}
         color="inherit"
         h="50px"
         w="50px"

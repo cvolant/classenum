@@ -1,4 +1,4 @@
-import { IActivity } from '../types/types';
+import { IActivity, IId } from '../types/types';
 
 export const activities: IActivity[] = [
   {
@@ -34,5 +34,9 @@ export const activities: IActivity[] = [
     subject: 'chemistry',
   },
 ];
+
+export const getActivity = (_id: IId): IActivity | undefined => (
+  activities.find((activity) => activity._id === _id)
+);
 
 export default activities;

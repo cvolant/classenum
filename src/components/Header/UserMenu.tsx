@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
-import Link from '../Link';
+import Link from '../elements/Link';
 import { IMenuItem } from '../../types/types';
 
 export type IUserMenuProps = {
@@ -56,13 +56,16 @@ const UserMenu: React.FC<IUserMenuProps> = ({
     open={open}
     onClose={handleClose}
   >
-    {title ? (
-      <>
-        <MenuItem disabled>{title}</MenuItem>
-        <Divider light />
-      </>
-    ) : null}
-    {menuItems.map(({ label, onClick, to }) => (
+    {(title ? [
+      (
+        <MenuItem disabled key="name">
+          {title}
+        </MenuItem>
+      ),
+      <Divider light key="divider" />,
+    ] : []).concat(menuItems.map(({
+      label, onClick, to,
+    }) => (
       <MenuItem
         disabled={!to && !onClick}
         key={label}
@@ -73,7 +76,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({
       >
         {to ? <Link to={to}>{label}</Link> : label}
       </MenuItem>
-    ))}
+    )))}
   </StyledMenu>
 );
 

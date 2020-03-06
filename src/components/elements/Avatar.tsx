@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MuiAvatar from '@material-ui/core/Avatar';
 
-import { IUser } from '../types/types';
+import { IUser } from '../../types/types';
 
 type IStyledAvatarProps = {
   size?: 'small' | 'medium' | 'large';
@@ -40,7 +40,9 @@ const Avatar: React.FC<IAvatarProps> = ({
     color={color}
     size={size}
     src={img}
-  />
+  >
+    {!img ? name.split(' ').map((word) => word[0]).join('') : undefined}
+  </StyledMuiAvatar>
 );
 
 export default Avatar;

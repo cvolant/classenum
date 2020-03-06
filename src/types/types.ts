@@ -34,23 +34,31 @@ export type IActivity = {
   teacher?: IId;
 };
 
-type ITeacher = {
+export type IStudentStatus = 'fine' | 'question' | 'problem';
+export type ITeacherStatus = 'busy' | 'available';
+
+type ITeacherSpec = {
   role: 'teacher';
-  status?: 'busy' | 'available';
+  status?: ITeacherStatus;
   subjects: ISubject | ISubject[];
 };
-type IStudent = {
+type IStudentSpec = {
   role: 'student';
-  status?: 'fine' | 'needs help';
   activities?: IId[];
+  currentProgress?: number;
   marks?: Record<ISubject, number[]>;
+  status?: IStudentStatus;
 };
-type IUserRoles = ITeacher | IStudent;
+type IUserSpec = ITeacherSpec | IStudentSpec;
 
-export type IUser = IUserRoles & {
+type IUserCommon = {
   _id: IId;
   name: string;
   img?: string;
   messages?: IId[];
   screenView?: string;
 };
+
+export type IUser = IUserCommon & IUserSpec;
+export type ITeacher = IUserCommon & ITeacherSpec;
+export type IStudent = IUserCommon & IStudentSpec;

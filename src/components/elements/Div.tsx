@@ -17,7 +17,11 @@ type IDivProps = {
   transform?: string;
   transition?: string;
   h?: string;
+  minHeight?: string;
+  maxHeight?: string;
   m?: string;
+  minWidth?: string;
+  maxWidth?: string;
   p?: string;
   w?: string;
   top?: string;
@@ -45,7 +49,11 @@ const Div = styled.div<IDivProps>`
     transform,
     transition,
     h,
+    minHeight,
+    maxHeight,
     w,
+    minWidth,
+    maxWidth,
     m,
     p,
     top,
@@ -69,7 +77,11 @@ const Div = styled.div<IDivProps>`
     transform: ${transform || ''};
     transition: ${transition || ''};
     height: ${h || ''};
+    min-height: ${minHeight || ''};
+    max-height: ${maxHeight || ''};
     width: ${w || ''};
+    min-width: ${minWidth || ''};
+    max-width: ${maxWidth || ''};
     margin: ${m || ''};
     padding: ${p || ''};
     top: ${top || ''};

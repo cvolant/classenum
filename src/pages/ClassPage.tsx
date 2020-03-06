@@ -8,7 +8,8 @@ import Launch from '@material-ui/icons/Launch';
 import Settings from '@material-ui/icons/Settings';
 import Videocam from '@material-ui/icons/Videocam';
 
-import PageLayout from '../components/PageLayout';
+import PageLayout from '../components/elements/PageLayout';
+import Students from '../components/Students/Students';
 import { IMenuItem } from '../types/types';
 
 const menuItems: IMenuItem[] = [
@@ -23,7 +24,7 @@ const menuItems: IMenuItem[] = [
 
 const ClassPage: React.FC = () => (
   <PageLayout title="Classe" subtitle="Matiere" menuItems={menuItems}>
-    Classe
+    <Students />
   </PageLayout>
 );
 

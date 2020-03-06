@@ -16,12 +16,15 @@ const theme = createMuiTheme({
     },
     background: {
       default: '#222',
-      paper: '#ccc',
+      paper: '#353535',
     },
     text: {
       primary: '#eee',
-      secondary: '#222',
+      secondary: '#ddd',
     },
+  },
+  shape: {
+    borderRadius: 8,
   },
 });
 
