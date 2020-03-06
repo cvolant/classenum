@@ -23,7 +23,7 @@ const MenuButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) =
   return (
     <Div
       absolute={onDrawer}
-      color="inherit"
+      color={theme.palette.text.secondary}
       fixed={!onDrawer}
       flex
       overflow="hidden"

@@ -3,14 +3,16 @@ import React, { ReactNode } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 
 import Div from './Div';
-import Menu from './Menu/Menu';
+import Menu, { IMenuProps } from './Menu/Menu';
 import Header, { IHeaderProps } from './Header/Header';
 
-type IPageLayoutProps = IHeaderProps & {
+type IPageLayoutProps = IHeaderProps & Partial<IMenuProps> & {
   children: ReactNode | ReactNode[];
 };
 
-const PageLayout: React.FC<IPageLayoutProps> = ({ children, subtitle, title }) => {
+const PageLayout: React.FC<IPageLayoutProps> = ({
+  children, menuItems, subtitle, title,
+}) => {
   const theme = useTheme();
 
   return (
@@ -23,7 +25,7 @@ const PageLayout: React.FC<IPageLayoutProps> = ({ children, subtitle, title }) =
     >
       <Header title={title} subtitle={subtitle} />
       <Div flex flexGrow>
-        <Menu />
+        {menuItems && <Menu menuItems={menuItems} />}
         {children}
       </Div>
     </Div>

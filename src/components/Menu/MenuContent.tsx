@@ -3,29 +3,19 @@ import React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Help from '@material-ui/icons/Help';
-import Add from '@material-ui/icons/Add';
-import BarChart from '@material-ui/icons/BarChart';
-import Email from '@material-ui/icons/Email';
-import Launch from '@material-ui/icons/Launch';
-import Settings from '@material-ui/icons/Settings';
-import Videocam from '@material-ui/icons/Videocam';
 
 import Div from '../Div';
+import { IMenuItem } from '../../types/types';
 
-const menuItems = [
-  { label: 'Ajouter un élève', Icon: Add },
-  { label: 'Envoyer un message à tous', Icon: Email },
-  { label: 'Parler à tous en visio', Icon: Videocam },
-  { label: 'Lancer une activité', Icon: Launch },
-  { label: 'Voir les statistiques', Icon: BarChart },
-];
-
-type IMenuContentProps = {
+type IMenuContentButtonProps = {
   center?: boolean;
 };
 
-const StyledButton = styled(Button)<ButtonProps & IMenuContentProps>`
+export type IMenuContentProps = IMenuContentButtonProps & {
+  menuItems: IMenuItem[];
+};
+
+const StyledButton = styled(Button)<ButtonProps & IMenuContentButtonProps>`
   ${({ center }): string => (!center ? `
     & .MuiButton-label {
       justify-content: flex-start;
@@ -33,22 +23,22 @@ const StyledButton = styled(Button)<ButtonProps & IMenuContentProps>`
   ` : '')}
 `;
 
-const MenuContent: React.FC<IMenuContentProps> = ({ center }) => (
+const MenuContent: React.FC<IMenuContentProps> = ({ center, menuItems }) => (
   <>
     <Div flex align={center ? 'space-between' : 'flex-end'}>
-      <IconButton color="inherit" aria-label="aide">
-        <Help />
-      </IconButton>
-      <IconButton color="inherit" aria-label="paramètres">
-        <Settings />
-      </IconButton>
+      {menuItems.map(({ label, labelVisible, Icon }) => !labelVisible && (
+        <IconButton color="inherit" aria-label={label}>
+          {Icon && <Icon />}
+        </IconButton>
+      ))}
     </Div>
-    {menuItems.map(({ label, Icon }) => (
+    {menuItems.map(({ label, labelVisible, Icon }) => labelVisible && (
       <StyledButton
         center={center}
         color="inherit"
+        key={label}
         size="large"
-        startIcon={<Icon />}
+        startIcon={Icon ? <Icon /> : undefined}
       >
         {label}
       </StyledButton>

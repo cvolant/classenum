@@ -1,3 +1,13 @@
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
+
+export type IMenuItem = {
+  label: string;
+  onClick?: () => void;
+  to?: string;
+  Icon?: (props: SvgIconProps) => JSX.Element;
+  labelVisible?: boolean;
+};
+
 export type IId = string;
 
 export type IMessage = {

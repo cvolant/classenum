@@ -7,7 +7,7 @@ import NotFound from '../pages/NotFoundPage';
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/" component={ClassPage} />
+    <Route path="/" exact component={ClassPage} />
     <Route path="/eleve/:slug" render={StudentPage} />
     <Route path="/*" component={NotFound} />
   </Switch>

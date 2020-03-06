@@ -1,4 +1,5 @@
 import React, { MouseEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { useTheme } from '@material-ui/core/styles';
@@ -29,8 +30,14 @@ const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
   const theme = useTheme();
   const user = useUser();
   const screen = useScreen();
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = useState<MouseEvent['currentTarget'] | null>(null);
   const open = Boolean(anchorEl);
+
+  const goHome = (): void => {
+    history.push('/');
+  };
 
   const handleMenu = (event: MouseEvent): void => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +50,12 @@ const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="home">
+        <IconButton
+          aria-label="home"
+          color="inherit"
+          edge="start"
+          onClick={goHome}
+        >
           <Logo />
         </IconButton>
         <Div flex flexColumn flexGrow m={theme.spacing(1, 2)}>
@@ -73,6 +85,7 @@ const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
               anchorEl={anchorEl}
               handleClose={handleClose}
               open={open}
+              title={user.name}
             />
           </div>
         ) : (

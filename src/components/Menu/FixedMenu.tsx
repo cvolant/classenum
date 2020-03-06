@@ -1,25 +1,23 @@
 import React, { ReactNode } from 'react';
 
-import { useTheme } from '@material-ui/core/styles';
-
-import Div from '../Div';
+import styled from 'styled-components';
+import Paper from '@material-ui/core/Paper';
 
 type IFixedMenuProps = {
   children: ReactNode | ReactNode[];
 };
 
-const FixedMenu: React.FC<IFixedMenuProps> = ({ children }) => {
-  const theme = useTheme();
+const StyledPaper = styled(Paper)`
+  padding: ${({ theme }): string => theme.spacing(1, 2)};
+  display: flex;
+  flex-direction: column;
+  color: ${({ theme }): string => theme.palette.text.secondary}
+`;
 
-  return (
-    <Div
-      background={theme.palette.background.paper}
-      flex
-      flexColumn
-      p={theme.spacing(1, 2)}
-    >
-      {children}
-    </Div>
-  );
-};
+const FixedMenu: React.FC<IFixedMenuProps> = ({ children }) => (
+  <StyledPaper square>
+    {children}
+  </StyledPaper>
+);
+
 export default FixedMenu;

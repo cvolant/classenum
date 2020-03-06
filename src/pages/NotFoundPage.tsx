@@ -9,11 +9,23 @@ import Div from '../components/Div';
 import PageLayout from '../components/PageLayout';
 
 const Magnifier = styled(Search)`
-  width: 30%;
-  height: 30%;
+  width: 100%;
+  height: 100%;
   animation: 2s ease-in-out infinite alternate leftright;
+  transform: translate(-50px);
+
   @keyframes leftright {
     from { transform: translate(-50px) }
+    to { transform: translate(50px) }
+  }
+`;
+
+const StyledDiv = styled(Div)`
+  animation: 2s ease-in-out 1.2s infinite alternate bottomtop;
+  transform: translateY(-50px);
+
+  @keyframes bottomtop {
+    from { transform: translateY(-50px) }
     to { transform: translate(50px) }
   }
 `;
@@ -23,8 +35,10 @@ const NotFound: React.FC = () => {
 
   return (
     <PageLayout title="Page non trouvée" subtitle="404">
-      <Div flex align="center">
-        <Magnifier htmlColor={theme.palette.grey[300]} />
+      <Div flex flexColumn align="center" w="100%">
+        <StyledDiv flex align="center" h="50vh">
+          <Magnifier htmlColor={theme.palette.grey[800]} />
+        </StyledDiv>
       </Div>
     </PageLayout>
   );

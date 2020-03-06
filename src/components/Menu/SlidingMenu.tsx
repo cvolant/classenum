@@ -12,7 +12,7 @@ type ISlidingMenuProps = {
 const StyledSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiPaper-root {
     overflow-y: visible;
-    color: inherit;
+    color: ${({ theme }): string => theme.palette.text.secondary};
   }
 `;
 

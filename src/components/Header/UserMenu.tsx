@@ -1,34 +1,47 @@
 import React, { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
 
+import styled from 'styled-components';
+
+import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
-const menuItems = [
-  {
-    label: 'Mon compte',
-    to: '/mon-compte',
-  },
-  {
-    label: 'Préférences',
-    onClick: (): void => { /* TODO: Implement prefereces */ },
-  },
-  {
-    label: 'Déconnexion',
-    onClick: (): void => { /* TODO: Implement log out */ },
-  },
-];
+import Link from '../Link';
+import { IMenuItem } from '../../types/types';
 
 export type IUserMenuProps = {
   anchorEl: MouseEvent['currentTarget'] | null;
   open?: boolean;
   handleClose: () => void;
+  title?: string;
 };
 
+const menuItems: IMenuItem[] = [
+  {
+    label: 'Mon compte',
+    labelVisible: true,
+    to: '/mon-compte',
+  },
+  {
+    label: 'Préférences',
+    labelVisible: true,
+  },
+  {
+    label: 'Déconnexion',
+    labelVisible: true,
+  },
+];
+
+const StyledMenu = styled(Menu)`
+  & .MuiPaper-root {
+    color: ${({ theme }): string => theme.palette.text.secondary};
+  }
+`;
+
 const UserMenu: React.FC<IUserMenuProps> = ({
-  anchorEl, open = false, handleClose,
+  anchorEl, open = false, handleClose, title,
 }) => (
-  <Menu
+  <StyledMenu
     id="menu-appbar"
     anchorEl={anchorEl}
     anchorOrigin={{
@@ -43,19 +56,25 @@ const UserMenu: React.FC<IUserMenuProps> = ({
     open={open}
     onClose={handleClose}
   >
+    {title ? (
+      <>
+        <MenuItem disabled>{title}</MenuItem>
+        <Divider light />
+      </>
+    ) : null}
     {menuItems.map(({ label, onClick, to }) => (
       <MenuItem
+        disabled={!to && !onClick}
+        key={label}
         onClick={(): void => {
           if (onClick) onClick();
           handleClose();
         }}
-        key={label}
       >
         {to ? <Link to={to}>{label}</Link> : label}
       </MenuItem>
     ))}
-    <MenuItem onClick={handleClose}>My account</MenuItem>
-  </Menu>
+  </StyledMenu>
 );
 
 export default UserMenu;
