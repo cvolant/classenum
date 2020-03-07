@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions/CardActions';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
@@ -16,7 +18,6 @@ import Checked from '@material-ui/icons/CheckBoxOutlined';
 import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import Email from '@material-ui/icons/Email';
 import Eye from '@material-ui/icons/RemoveRedEye';
-import FullScreen from '@material-ui/icons/Fullscreen';
 import Help from '@material-ui/icons/Help';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
@@ -113,6 +114,7 @@ const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgC
 `;
 
 const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSelect }) => {
+  const history = useHistory();
   const [, updatePanel] = usePanel();
   const [seeScreen, setSeeScreen] = useState(false);
   const [isReady, setIsReady] = useState<boolean | number>(false);
@@ -138,28 +140,29 @@ const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSel
     setSeeScreen(newSeeScreen);
   };
 
+  const goToStudentPage = (): void => {
+    history.push(`/${student._id}-${student.name.toLowerCase().replace(' ', '-')}`);
+  };
+
   const activity = student.activities && student.activities[0]
     ? getActivity(student.activities[0])
     : undefined;
 
   return (
     <StyledCard selected={selected}>
-      <CardHeader
-        avatar={<Avatar size="large" user={student} />}
-        action={(
-          <IconButton aria-label="settings">
-            <FullScreen />
-          </IconButton>
-        )}
-        title={student.name}
-        subheader={statusChip ? (
-          <StyledChip
-            bgColor={statusChip.color}
-            icon={<statusChip.Icon />}
-            label={statusChip.status}
-          />
-        ) : undefined}
-      />
+      <CardActionArea onClick={goToStudentPage}>
+        <CardHeader
+          avatar={<Avatar size="large" user={student} />}
+          title={student.name}
+          subheader={statusChip ? (
+            <StyledChip
+              bgColor={statusChip.color}
+              icon={<statusChip.Icon />}
+              label={statusChip.status}
+            />
+          ) : undefined}
+        />
+      </CardActionArea>
       {seeScreen ? (
         <StyledDiv loading={isReady !== true}>
           <CardMedia
