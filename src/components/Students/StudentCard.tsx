@@ -20,7 +20,9 @@ import FullScreen from '@material-ui/icons/Fullscreen';
 import Help from '@material-ui/icons/Help';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
+import usePanel from '../../hooks/usePanel';
 import Avatar from '../elements/Avatar';
+import { displayMessages } from '../Messages/Messages';
 import { IStudentStatus, IStudent } from '../../types/types';
 
 import { getActivity } from '../../fixtures';
@@ -111,6 +113,7 @@ const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgC
 `;
 
 const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSelect }) => {
+  const [, updatePanel] = usePanel();
   const [seeScreen, setSeeScreen] = useState(false);
   const [isReady, setIsReady] = useState<boolean | number>(false);
   const statusChip = student.status ? statusChips[student.status] : undefined;
@@ -203,7 +206,10 @@ const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSel
         <IconButton aria-label="voir" onClick={toggleSeeScreen()}>
           <Eye />
         </IconButton>
-        <IconButton aria-label="message">
+        <IconButton
+          aria-label="message"
+          onClick={displayMessages([student], updatePanel)}
+        >
           <Email />
         </IconButton>
         <IconButton

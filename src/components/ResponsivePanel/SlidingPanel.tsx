@@ -10,10 +10,18 @@ type ISlidingMenuProps = {
 };
 
 const StyledSwipeableDrawer = styled(SwipeableDrawer)`
-  & .MuiPaper-root {
-    overflow-y: visible;
-    color: ${({ theme }): string => theme.palette.text.secondary};
-  }
+  ${({ theme }): string => `
+    & .MuiPaper-root {
+      overflow-y: visible;
+
+      & > div + div {
+        margin-top: ${theme.spacing(5)}px;
+      }
+    }
+    & .MuiButton-label {
+      justify-content: center;
+    }
+  `};
 `;
 
 const SlidingPanel: React.FC<ISlidingMenuProps> = ({ children }) => {

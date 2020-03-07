@@ -47,6 +47,7 @@ const PanelProvider: React.FC<IPanelProviderProps> = ({ children }) => {
 
   const updatePanel: IPanelUpdater = (payload) => {
     dispatchPanel({ type: 'update', payload });
+    console.log('From usePanel, updatePanel. payload:', payload, 'panel:', panel);
   };
 
   const replacePanel: IPanelUpdater = (payload) => {

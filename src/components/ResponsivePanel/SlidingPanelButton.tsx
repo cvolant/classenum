@@ -32,6 +32,7 @@ const SlidingPanelButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, ups
       top={onDrawer ? '0' : undefined}
       transform={`translate(-50%${upside ? ', -100%' : ''})`}
       transition={theme.transitions.create('transform')}
+      zIndex={1}
     >
       <StyledDiv
         background="transparent"

@@ -64,10 +64,14 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
             </Grid>
           ))}
       </Grid>
-      {selected.length && (
+      {students && selected.length && (
         <StyledFab
           color="secondary"
-          onClick={displayMessages(updatePanel)}
+          disabled={!students}
+          onClick={displayMessages(
+            selected.map((sel) => students.find((student) => student._id === sel)) as IStudent[],
+            updatePanel,
+          )}
         >
           <Email />
         </StyledFab>

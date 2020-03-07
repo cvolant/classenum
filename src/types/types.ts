@@ -15,7 +15,8 @@ export type IMessage = {
   _id: IId;
   content: string;
   date: Date;
-  from?: IId;
+  from: IId;
+  to: IId[];
 };
 
 export type ISubject =

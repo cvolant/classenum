@@ -9,10 +9,11 @@ type IFixedPanelProps = {
 
 const StyledPaper = styled(Paper)`
   ${({ theme }): string => `
-    padding: ${theme.spacing(2)}px;
+    color: ${theme.palette.text.secondary};
     display: flex;
     flex-direction: column;
-    color: ${theme.palette.text.secondary};
+    padding: ${theme.spacing(2)}px;
+    width: 350px;
 
     & .MuiButton-label {
       white-space: nowrap;

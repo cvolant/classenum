@@ -5,6 +5,7 @@ type IDivProps = {
   fixed?: boolean;
   relative?: boolean;
   align?: string;
+  alignItems?: string;
   background?: string;
   borderRadius?: string;
   boxShadow?: string;
@@ -12,6 +13,8 @@ type IDivProps = {
   flex?: boolean;
   flexColumn?: boolean;
   flexGrow?: boolean;
+  flexShrink?: boolean;
+  flexWrap?: boolean;
   noPointerEvents?: boolean;
   overflow?: string;
   transform?: string;
@@ -37,6 +40,7 @@ const Div = styled.div<IDivProps>`
     fixed,
     relative,
     align,
+    alignItems,
     background,
     borderRadius,
     boxShadow,
@@ -44,6 +48,8 @@ const Div = styled.div<IDivProps>`
     flex,
     flexColumn,
     flexGrow,
+    flexShrink,
+    flexWrap,
     noPointerEvents,
     overflow,
     transform,
@@ -69,7 +75,10 @@ const Div = styled.div<IDivProps>`
     display: ${(flex && 'flex') || ''};
     flex-direction: ${(flexColumn && 'column') || ''};
     flex-grow: ${(flexGrow && 1) || ''};
+    flex-shrink: ${(flexShrink && 1) || ''};
+    flex-wrap: ${(flexWrap && 'wrap') || ''};
     justify-content: ${(flex && align) || ''};
+    align-items: ${alignItems || ''};
     text-align: ${(!flex && align) || ''};
     position: ${(fixed && 'fixed') || (absolute && 'absolute') || (relative && 'relative') || ''};
     pointer-events: ${(noPointerEvents && 'none') || ''};

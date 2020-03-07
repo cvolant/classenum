@@ -19,10 +19,12 @@ import { IMenuItem, IStudent } from '../types/types';
 import getFixtures from '../fixtures';
 
 const ClassPage: React.FC = () => {
-  const [, updatePanel] = usePanel();
+  const [panel, updatePanel] = usePanel();
   const [pageData, updatePageData] = usePageData();
   const [students, setStudents] = useState<IStudent[] | undefined>();
   const [loading, setLoading] = useState(true);
+
+  console.log('From ClassPage. panel context:', panel);
 
   const { menuItems } = pageData;
 
@@ -34,10 +36,11 @@ const ClassPage: React.FC = () => {
         labelVisible: true,
       },
       {
+        disabled: !students,
         Icon: Email,
         label: 'Envoyer un message à tous',
         labelVisible: true,
-        onClick: displayMessages(updatePanel),
+        onClick: students ? displayMessages(students, updatePanel) : undefined,
       },
       {
         disabled: true,
@@ -71,7 +74,7 @@ const ClassPage: React.FC = () => {
     if (updatePageData) {
       updatePageData({ menuItems: newMenuItems });
     }
-  }, [/* onLoad only */]);
+  }, [students]);
 
   useEffect(() => {
     getFixtures(['session', 'users'], ({ session, users }) => {
