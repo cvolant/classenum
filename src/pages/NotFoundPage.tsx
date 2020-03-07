@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from 'styled-components';
 import { useTheme } from '@material-ui/core/styles';
 import Search from '@material-ui/icons/Search';
 
+import usePageData from '../hooks/usePageData';
 import Div from '../components/elements/Div';
-
-import PageLayout from '../components/elements/PageLayout';
 
 const Magnifier = styled(Search)`
   width: 100%;
@@ -31,16 +30,24 @@ const StyledDiv = styled(Div)`
 `;
 
 const NotFound: React.FC = () => {
+  const [, setPageData] = usePageData();
   const theme = useTheme();
 
+  useEffect(() => {
+    if (setPageData) {
+      setPageData({
+        title: 'Page non trouvée',
+        subtitle: '404',
+      });
+    }
+  }, [setPageData]);
+
   return (
-    <PageLayout title="Page non trouvée" subtitle="404">
-      <Div flex flexColumn align="center" w="100%">
-        <StyledDiv flex align="center" h="50vh">
-          <Magnifier htmlColor={theme.palette.grey[800]} />
-        </StyledDiv>
-      </Div>
-    </PageLayout>
+    <Div flex flexColumn align="center" w="100%">
+      <StyledDiv flex align="center" h="50vh">
+        <Magnifier htmlColor={theme.palette.grey[800]} />
+      </StyledDiv>
+    </Div>
   );
 };
 export default NotFound;

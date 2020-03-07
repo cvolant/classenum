@@ -17,7 +17,7 @@ type IMenuButtonProps = {
 const StyledDiv = styled(Div)`
 `;
 
-const MenuButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) => {
+const SlidingPanelButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) => {
   const theme = useTheme();
 
   return (
@@ -75,4 +75,4 @@ const MenuButton: React.FC<IMenuButtonProps> = ({ onClick, onDrawer, upside }) =
   );
 };
 
-export default MenuButton;
+export default SlidingPanelButton;

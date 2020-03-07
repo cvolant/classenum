@@ -1,11 +1,12 @@
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 export type IMenuItem = {
+  disabled?: boolean;
+  Icon?: (props: SvgIconProps) => JSX.Element;
   label: string;
+  labelVisible?: boolean;
   onClick?: () => void;
   to?: string;
-  Icon?: (props: SvgIconProps) => JSX.Element;
-  labelVisible?: boolean;
 };
 
 export type IId = string;
@@ -32,6 +33,12 @@ export type IActivity = {
   date?: Date;
   subject: ISubject;
   teacher?: IId;
+};
+
+export type ISession = {
+  subject: string;
+  name: string;
+  teacher: IId;
 };
 
 export type IStudentStatus = 'fine' | 'question' | 'problem';

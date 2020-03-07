@@ -9,8 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
-import useUser from '../../hooks/useUser';
 import useScreen from '../../hooks/useScreen';
+import usePageData from '../../hooks/usePageData';
+import useUser from '../../hooks/useUser';
 import Div from '../elements/Div';
 import Logo from '../elements/Logo';
 import Avatar from '../elements/Avatar';
@@ -21,16 +22,12 @@ const StyledTypography = styled(Typography)<TypographyProps>`
   line-height: 1;
 `;
 
-export type IHeaderProps = {
-  subtitle?: string;
-  title?: string;
-};
-
-const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
+const Header: React.FC = () => {
   const theme = useTheme();
   const user = useUser();
   const screen = useScreen();
   const history = useHistory();
+  const [{ title, subtitle }] = usePageData();
 
   const [anchorEl, setAnchorEl] = useState<MouseEvent['currentTarget'] | null>(null);
   const open = Boolean(anchorEl);
@@ -58,7 +55,7 @@ const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
         >
           <Logo />
         </IconButton>
-        <Div flex flexColumn flexGrow m={theme.spacing(1, 2)}>
+        <Div flex flexColumn flexGrow m={theme.spacing(2, 2)}>
           <StyledTypography>
             {subtitle}
           </StyledTypography>
@@ -70,7 +67,7 @@ const Header: React.FC<IHeaderProps> = ({ subtitle, title }) => {
           <div>
             <IconButton
               aria-label="account of current user"
-              aria-controls="menu-appbar"
+              aria-controls="ResponsivePanel-appbar"
               aria-haspopup="true"
               onClick={handleMenu}
               color="inherit"

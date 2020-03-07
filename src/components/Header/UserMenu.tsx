@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
 import Link from '../elements/Link';
 import { IMenuItem } from '../../types/types';
 
@@ -42,7 +41,7 @@ const UserMenu: React.FC<IUserMenuProps> = ({
   anchorEl, open = false, handleClose, title,
 }) => (
   <StyledMenu
-    id="menu-appbar"
+    id="ResponsivePanel-appbar"
     anchorEl={anchorEl}
     anchorOrigin={{
       vertical: 'top',

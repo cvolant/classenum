@@ -12,10 +12,12 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
-import Help from '@material-ui/icons/Help';
+import Checked from '@material-ui/icons/CheckBoxOutlined';
+import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import Email from '@material-ui/icons/Email';
 import Eye from '@material-ui/icons/RemoveRedEye';
 import FullScreen from '@material-ui/icons/Fullscreen';
+import Help from '@material-ui/icons/Help';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 import Avatar from '../elements/Avatar';
@@ -33,6 +35,8 @@ type IStatusChip = {
 
 export type IStudentCardProps = {
   student: IStudent;
+  selected?: boolean;
+  handleSelect: () => void;
 };
 
 const statusChips: Record<IStudentStatus, IStatusChip> = {
@@ -53,6 +57,22 @@ const statusChips: Record<IStudentStatus, IStatusChip> = {
   },
 };
 
+const StyledCard = styled(Card)<{ selected?: boolean }>`
+  ${({ theme, selected }): string => `
+    transition: ${theme.transitions.create('background')};
+    ${(selected ? `
+      background: radial-gradient(circle at bottom center,
+        ${theme.palette.grey[600]} 0%,
+        ${theme.palette.grey[800]} 80%,
+        ${theme.palette.grey[900]} 100%
+      );
+      border: 1px solid ${theme.palette.grey[600]}
+    ` : `
+      border: 1px solid ${theme.palette.background.paper};
+    `)}
+  `}
+`;
+
 const StyledDiv = styled.div<{ loading?: boolean }>`
   pointer-events: none;
   ${({ loading }): string => (loading ? `
@@ -72,17 +92,25 @@ const StyledDiv = styled.div<{ loading?: boolean }>`
 `;
 
 const StyledLinearProgress = styled(LinearProgress)`
-  background: ${({ theme }): string => theme.palette.secondary.light};
+  ${({ theme }): string => `
+    background: ${theme.palette.secondary.light};
+    height: ${theme.spacing(1)}px;
+    border-radius: ${theme.spacing(0.5)}px;
+  `}
 `;
 
 // eslint-disable-next-line react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars
 const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgColor: IThemeColor }>`
   ${({ bgColor, theme }): string => `
-    background: ${(bgColor && theme.palette[bgColor].main) || ''};
+    background: ${(bgColor && theme.palette[bgColor].dark) || ''};
+    color: ${(bgColor && theme.palette[bgColor].contrastText) || ''};
+    & svg {
+      color: ${(bgColor && theme.palette[bgColor].contrastText) || ''};
+    }
   `}
 `;
 
-const StudentCard: React.FC<IStudentCardProps> = ({ student }) => {
+const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSelect }) => {
   const [seeScreen, setSeeScreen] = useState(false);
   const [isReady, setIsReady] = useState<boolean | number>(false);
   const statusChip = student.status ? statusChips[student.status] : undefined;
@@ -112,7 +140,7 @@ const StudentCard: React.FC<IStudentCardProps> = ({ student }) => {
     : undefined;
 
   return (
-    <Card>
+    <StyledCard selected={selected}>
       <CardHeader
         avatar={<Avatar size="large" user={student} />}
         action={(
@@ -178,8 +206,14 @@ const StudentCard: React.FC<IStudentCardProps> = ({ student }) => {
         <IconButton aria-label="message">
           <Email />
         </IconButton>
+        <IconButton
+          aria-label={selected ? 'déselectionner' : 'selectionner'}
+          onClick={handleSelect}
+        >
+          {selected ? <Checked /> : <Unchecked />}
+        </IconButton>
       </CardActions>
-    </Card>
+    </StyledCard>
   );
 };
 

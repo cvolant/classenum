@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
-import MenuButton from './MenuButton';
+import SlidingPanelButton from './SlidingPanelButton';
 
 type ISlidingMenuProps = {
   children: ReactNode | ReactNode[];
@@ -16,7 +16,7 @@ const StyledSwipeableDrawer = styled(SwipeableDrawer)`
   }
 `;
 
-const SlidingMenu: React.FC<ISlidingMenuProps> = ({ children }) => {
+const SlidingPanel: React.FC<ISlidingMenuProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   const toggleMenu = (toOpen?: boolean) => (): void => {
@@ -25,7 +25,7 @@ const SlidingMenu: React.FC<ISlidingMenuProps> = ({ children }) => {
 
   return (
     <>
-      <MenuButton onClick={toggleMenu()} />
+      <SlidingPanelButton onClick={toggleMenu()} />
       <StyledSwipeableDrawer
         anchor="bottom"
         open={open}
@@ -33,11 +33,11 @@ const SlidingMenu: React.FC<ISlidingMenuProps> = ({ children }) => {
         onOpen={toggleMenu(true)}
       >
         <>
-          <MenuButton onClick={toggleMenu()} onDrawer upside={!open} />
+          <SlidingPanelButton onClick={toggleMenu()} onDrawer upside={!open} />
           {children}
         </>
       </StyledSwipeableDrawer>
     </>
   );
 };
-export default SlidingMenu;
+export default SlidingPanel;

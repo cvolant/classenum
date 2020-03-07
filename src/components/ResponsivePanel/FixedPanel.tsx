@@ -3,13 +3,13 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 
-type IFixedMenuProps = {
+type IFixedPanelProps = {
   children: ReactNode | ReactNode[];
 };
 
 const StyledPaper = styled(Paper)`
   ${({ theme }): string => `
-    padding: ${theme.spacing(1, 2)};
+    padding: ${theme.spacing(2)}px;
     display: flex;
     flex-direction: column;
     color: ${theme.palette.text.secondary};
@@ -20,10 +20,10 @@ const StyledPaper = styled(Paper)`
   `};
 `;
 
-const FixedMenu: React.FC<IFixedMenuProps> = ({ children }) => (
+const FixedPanel: React.FC<IFixedPanelProps> = ({ children }) => (
   <StyledPaper square>
     {children}
   </StyledPaper>
 );
 
-export default FixedMenu;
+export default FixedPanel;

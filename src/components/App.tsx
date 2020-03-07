@@ -6,7 +6,7 @@ import { StylesProvider, ThemeProvider as MuiThemeProvider } from '@material-ui/
 import theme from '../theme';
 import 'typeface-roboto';
 
-import Routes from './Routes';
+import PageLayout from './PageLayout';
 
 console.log('From App. theme:', theme);
 
@@ -15,7 +15,7 @@ const App: React.FC = () => (
     <MuiThemeProvider theme={theme}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Routes />
+          <PageLayout />
         </BrowserRouter>
       </ThemeProvider>
     </MuiThemeProvider>

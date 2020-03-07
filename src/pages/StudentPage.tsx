@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '../components/elements/PageLayout';
 
 type IStudentPageProps = {
   match: {
@@ -10,7 +9,7 @@ type IStudentPageProps = {
 };
 
 const StudentPage: React.FC<IStudentPageProps> = ({ match: { params: { slug } } }) => (
-  <PageLayout title="Eleve" subtitle={slug}>
+  <>
     <p>
       {slug}
     </p>
@@ -22,7 +21,7 @@ const StudentPage: React.FC<IStudentPageProps> = ({ match: { params: { slug } } 
       src="https://www.youtube.com/embed/0rxiKoCv-98?autoplay=1&amp;start=538&amp;mute=1&amp;controls=0"
       title="screen"
     />
-  </PageLayout>
+  </>
 );
 
 export default StudentPage;
