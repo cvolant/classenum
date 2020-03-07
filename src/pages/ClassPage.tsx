@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import Help from '@material-ui/icons/Help';
 import Add from '@material-ui/icons/Add';
@@ -12,19 +12,17 @@ import Videocam from '@material-ui/icons/Videocam';
 import usePanel from '../hooks/usePanel';
 import usePageData from '../hooks/usePageData';
 import MenuContent from '../components/MenuContent';
-import { displayMessages } from '../components/Messages/Messages';
+import Messages, { displayMessages } from '../components/Messages/Messages';
 import Students from '../components/Students/Students';
 import { IMenuItem, IStudent } from '../types/types';
 
 import getFixtures from '../fixtures';
 
 const ClassPage: React.FC = () => {
-  const [panel, updatePanel] = usePanel();
+  const { updatePanel } = usePanel();
   const [pageData, updatePageData] = usePageData();
   const [students, setStudents] = useState<IStudent[] | undefined>();
   const [loading, setLoading] = useState(true);
-
-  console.log('From ClassPage. panel context:', panel);
 
   const { menuItems } = pageData;
 
@@ -34,6 +32,7 @@ const ClassPage: React.FC = () => {
         Icon: Add,
         label: 'Ajouter un élève',
         labelVisible: true,
+        onClick: (): void => updatePanel({ screenIndex: 0 }),
       },
       {
         disabled: !students,
@@ -89,13 +88,20 @@ const ClassPage: React.FC = () => {
     });
   }, [/* onLoad only */]);
   useEffect(() => {
-    if (updatePanel && menuItems) {
-      updatePanel({ mainMenu: <MenuContent menuItems={menuItems} key="menu-content" /> });
+    if (updatePanel && menuItems && students) {
+      updatePanel({
+        chapters: [
+          <div key="add-student" />,
+          <MenuContent key="menu-content" menuItems={menuItems} />,
+          <Messages key="messages" recipients={students} />,
+        ],
+        screenIndex: 1,
+      });
     }
-  }, [menuItems]);
+  }, [menuItems, students]);
 
-  return (
+  return useMemo(() => (
     <Students loading={loading} students={students} />
-  );
+  ), [students, loading]);
 };
 export default ClassPage;

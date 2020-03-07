@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Send from '@material-ui/icons/Send';
 
-import usePanel, { IPanelUpdater } from '../../hooks/usePanel';
+import usePanel, { IPanel } from '../../hooks/usePanel';
 import Div from '../elements/Div';
 import MessageList from './MessageList';
 
@@ -43,7 +43,7 @@ const StyledTextField = styled(TextField)`
 
 const Messages: React.FC<IMessagesProps> = ({ recipients }) => {
   const theme = useTheme();
-  const [panel, updatePanel] = usePanel();
+  const { updatePanel } = usePanel();
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<IMessage[] | undefined>();
@@ -64,11 +64,7 @@ const Messages: React.FC<IMessagesProps> = ({ recipients }) => {
   };
 
   const handleReturn = (): void => {
-    console.log('From Messags, handleReturn. updatePanel:', updatePanel, 'panel:', panel);
-    if (updatePanel) {
-      updatePanel({ left: undefined });
-    }
-    console.log('From Messags, handleReturn. updatePanel:', updatePanel, 'panel:', panel);
+    updatePanel({ screenIndex: 1 });
   };
 
   return (
@@ -108,10 +104,15 @@ const Messages: React.FC<IMessagesProps> = ({ recipients }) => {
   );
 };
 
-export const displayMessages = (recipients: IUser[], updatePanel?: IPanelUpdater) => (): void => {
-  if (updatePanel) {
-    updatePanel({ left: [<Messages key="messages" recipients={recipients} />] });
-  }
+export const displayMessages = (
+  recipients: IUser[],
+  updatePanel: (updates: Partial<IPanel>) => void,
+) => (): void => {
+  updatePanel({
+    chapters: [null, null, <Messages key="messages" recipients={recipients} />],
+    screenIndex: 2,
+    open: true,
+  });
 };
 
 export default Messages;

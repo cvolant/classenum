@@ -115,7 +115,7 @@ const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgC
 
 const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSelect }) => {
   const history = useHistory();
-  const [, updatePanel] = usePanel();
+  const { updatePanel } = usePanel();
   const [seeScreen, setSeeScreen] = useState(false);
   const [isReady, setIsReady] = useState<boolean | number>(false);
   const statusChip = student.status ? statusChips[student.status] : undefined;

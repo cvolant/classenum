@@ -28,7 +28,7 @@ const StyledFab = styled(Fab)`
 
 const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
   const [selected, setSelected] = useState<IId[]>([]);
-  const [, updatePanel] = usePanel();
+  const { updatePanel } = usePanel();
 
   const toggleSelect = ({ _id }: { _id: IId }) => (): void => {
     const index = selected.indexOf(_id);
@@ -64,7 +64,7 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
             </Grid>
           ))}
       </Grid>
-      {students && selected.length && (
+      {students && selected.length ? (
         <StyledFab
           color="secondary"
           disabled={!students}
@@ -75,7 +75,7 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
         >
           <Email />
         </StyledFab>
-      )}
+      ) : null}
     </Div>
   );
 };

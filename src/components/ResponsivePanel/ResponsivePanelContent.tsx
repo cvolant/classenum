@@ -4,20 +4,11 @@ import usePanel from '../../hooks/usePanel';
 import HorizontalStory from '../elements/HorizontalStory';
 
 const ResponsivePanelContent: React.FC = () => {
-  const [{
-    left,
-    right,
-    mainMenu,
-    screenIndex,
-  }] = usePanel();
+  const { panel: { chapters, screenIndex } } = usePanel();
 
   return (
-    <HorizontalStory chapter={screenIndex || !right ? 0 : 1}>
-      {[
-        ...(left || []),
-        mainMenu,
-        ...(right || []),
-      ]}
+    <HorizontalStory chapter={screenIndex}>
+      {chapters}
     </HorizontalStory>
   );
 };

@@ -1,8 +1,9 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
+import usePanel from '../../hooks/usePanel';
 import SlidingPanelButton from './SlidingPanelButton';
 
 type ISlidingMenuProps = {
@@ -25,18 +26,16 @@ const StyledSwipeableDrawer = styled(SwipeableDrawer)`
 `;
 
 const SlidingPanel: React.FC<ISlidingMenuProps> = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const { togglePanel, panel: { open } } = usePanel();
 
-  const toggleMenu = (toOpen?: boolean) => (): void => {
-    setOpen(typeof toOpen === 'boolean' ? toOpen : !open);
-  };
+  const toggleMenu = (toOpen?: boolean) => (): void => togglePanel(toOpen);
 
   return (
     <>
       <SlidingPanelButton onClick={toggleMenu()} />
       <StyledSwipeableDrawer
         anchor="bottom"
-        open={open}
+        open={open || false}
         onClose={toggleMenu(false)}
         onOpen={toggleMenu(true)}
       >
@@ -48,4 +47,5 @@ const SlidingPanel: React.FC<ISlidingMenuProps> = ({ children }) => {
     </>
   );
 };
+
 export default SlidingPanel;

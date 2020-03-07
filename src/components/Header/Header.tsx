@@ -17,7 +17,13 @@ import Logo from '../elements/Logo';
 import Avatar from '../elements/Avatar';
 import UserMenu from './UserMenu';
 
-const StyledTypography = styled(Typography)<TypographyProps>`
+const Title = styled(Typography)<TypographyProps & { component?: string }>`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const Subtitle = styled(Title)<TypographyProps>`
   font-variant: small-caps;
   line-height: 1;
 `;
@@ -55,15 +61,15 @@ const Header: React.FC = () => {
         >
           <Logo />
         </IconButton>
-        <Div flex flexColumn flexGrow m={theme.spacing(2, 2)}>
-          <StyledTypography>
+        <Div flex flexColumn flexGrow m={theme.spacing(2, 2)} minWidth="0">
+          <Subtitle>
             {subtitle}
-          </StyledTypography>
-          <Typography variant={screen.mdup ? 'h4' : 'h5'} component="h1">
+          </Subtitle>
+          <Title variant={(screen.lgup && 'h4') || (screen.smup && 'h5') || 'h6'} component="h1">
             {title}
-          </Typography>
+          </Title>
         </Div>
-        {user ? (
+        {screen.smup && user ? (
           <div>
             <IconButton
               aria-label="account of current user"
@@ -85,11 +91,12 @@ const Header: React.FC = () => {
               title={user.name}
             />
           </div>
-        ) : (
+        ) : null}
+        {screen.smup && !user ? (
           <Button color="primary" disableElevation variant="contained">
             Connexion
           </Button>
-        )}
+        ) : null}
       </Toolbar>
     </AppBar>
   );
