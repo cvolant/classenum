@@ -17,6 +17,7 @@ import Students from '../components/Students/Students';
 import { IMenuItem, IStudent } from '../types/types';
 
 import getFixtures from '../fixtures';
+import AddStudent from '../components/AddStudent/AddStudent';
 
 const ClassPage: React.FC = () => {
   const { updatePanel } = usePanel();
@@ -25,6 +26,22 @@ const ClassPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const { menuItems } = pageData;
+
+  const handleRemoveStudent = (studentToRemove: IStudent): void => {
+    setStudents(students?.filter((filterStudent) => filterStudent._id !== studentToRemove._id));
+  };
+
+  const handleAddStudent = (studentToAdd: Partial<IStudent> & { name: string }): void => {
+    setStudents([
+      ...students || [],
+      {
+        _id: students ? `u${parseInt(students[students.length - 1]._id.slice(1), 10) as number}` : 'n0001',
+        ...studentToAdd,
+        role: 'student',
+      },
+    ]);
+    updatePanel({ open: false, screenIndex: 1 });
+  };
 
   useEffect(() => {
     const newMenuItems: IMenuItem[] = [
@@ -87,11 +104,12 @@ const ClassPage: React.FC = () => {
       setLoading(false);
     });
   }, [/* onLoad only */]);
+
   useEffect(() => {
     if (updatePanel && menuItems && students) {
       updatePanel({
         chapters: [
-          <div key="add-student" />,
+          <AddStudent key="add-student" handleAddStudent={handleAddStudent} />,
           <MenuContent key="menu-content" menuItems={menuItems} />,
           <Messages key="messages" recipients={students} />,
         ],
@@ -101,7 +119,7 @@ const ClassPage: React.FC = () => {
   }, [menuItems, students]);
 
   return useMemo(() => (
-    <Students loading={loading} students={students} />
+    <Students loading={loading} students={students} handleRemoveStudent={handleRemoveStudent} />
   ), [students, loading]);
 };
 export default ClassPage;

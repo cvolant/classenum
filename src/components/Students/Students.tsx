@@ -12,10 +12,12 @@ import StudentCard from './StudentCard';
 import Div from '../elements/Div';
 
 import { IId, IStudent } from '../../types/types';
+import ConfirmDialog from '../elements/ConfirmDialog';
 
 export type IStudentsProps = {
   loading?: boolean;
   students?: IStudent[];
+  handleRemoveStudent: (student: IStudent) => void;
 };
 
 const StyledFab = styled(Fab)`
@@ -26,8 +28,9 @@ const StyledFab = styled(Fab)`
   `}
 `;
 
-const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
+const Students: React.FC<IStudentsProps> = ({ loading, students, handleRemoveStudent }) => {
   const [selected, setSelected] = useState<IId[]>([]);
+  const [remove, setRemove] = useState<IStudent | undefined>(undefined);
   const { updatePanel } = usePanel();
 
   const toggleSelect = ({ _id }: { _id: IId }) => (): void => {
@@ -45,6 +48,19 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
     }
   };
 
+  const handleCloseRemoveDialog = (): void => {
+    setRemove(undefined);
+  };
+
+  const askConfirmRemove = (studentToRemove: IStudent) => (): void => {
+    setRemove(studentToRemove);
+  };
+
+  const handleConfirmRemove = (studentToRemove: IStudent) => (): void => {
+    handleRemoveStudent(studentToRemove);
+    handleCloseRemoveDialog();
+  };
+
   return (
     <Div p="20px" flexGrow overflow="auto">
       <Grid container spacing={2}>
@@ -55,6 +71,7 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
                 student={student}
                 selected={selected.includes(student._id)}
                 handleSelect={toggleSelect(student)}
+                handleRemove={askConfirmRemove(student)}
               />
             </Grid>
           )) : loading && Array.from(Array(9)).map((_e, lcIndex) => (
@@ -76,6 +93,15 @@ const Students: React.FC<IStudentsProps> = ({ loading, students }) => {
           <Email />
         </StyledFab>
       ) : null}
+      {remove && (
+        <ConfirmDialog
+          description="Êtes vous sûr de vouloir le retirer de la liste des étudiants suivis ?"
+          handleCancel={handleCloseRemoveDialog}
+          handleConfirm={handleConfirmRemove(remove)}
+          open
+          title={`Retirer ${remove.name} ?`}
+        />
+      )}
     </Div>
   );
 };

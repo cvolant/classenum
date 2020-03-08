@@ -82,7 +82,10 @@ const Div = styled.div<IDivProps>`
     text-align: ${(!flex && align) || ''};
     position: ${(fixed && 'fixed') || (absolute && 'absolute') || (relative && 'relative') || ''};
     pointer-events: ${(noPointerEvents && 'none') || ''};
-    overflow: ${overflow || ''};
+    ${(overflow === 'x' && 'overflow-x: auto;')
+      || (overflow === 'y' && 'overflow-y: auto;')
+      || `overflow: ${overflow};`};
+    overflow-scrolling: ${overflow !== 'hidden' ? 'touch' : ''};
     transform: ${transform || ''};
     transition: ${transition || ''};
     height: ${h || ''};

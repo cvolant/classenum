@@ -19,6 +19,7 @@ import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import Email from '@material-ui/icons/Email';
 import Eye from '@material-ui/icons/RemoveRedEye';
 import Help from '@material-ui/icons/Help';
+import Remove from '@material-ui/icons/RemoveCircleOutline';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 import usePanel from '../../hooks/usePanel';
@@ -40,6 +41,7 @@ export type IStudentCardProps = {
   student: IStudent;
   selected?: boolean;
   handleSelect: () => void;
+  handleRemove: () => void;
 };
 
 const statusChips: Record<IStudentStatus, IStatusChip> = {
@@ -113,7 +115,14 @@ const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgC
   `}
 `;
 
-const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSelect }) => {
+const StyledCardActions = styled(CardActions)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StudentCard: React.FC<IStudentCardProps> = ({
+  student, selected, handleSelect, handleRemove,
+}) => {
   const history = useHistory();
   const { updatePanel } = usePanel();
   const [seeScreen, setSeeScreen] = useState(false);
@@ -192,36 +201,52 @@ const StudentCard: React.FC<IStudentCardProps> = ({ student, selected, handleSel
                 Pas d&apos;activité en cours
               </Typography>
             )}
-          <Typography variant="body2" color="textSecondary" component="p">
-            Avancement dans l&apos;activité :
-            {' '}
-            {student.currentProgress}
-            %
-          </Typography>
-          <StyledLinearProgress
-            variant="determinate"
-            color="secondary"
-            value={student.currentProgress}
-          />
+          {student.currentProgress && (
+            <>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Avancement dans l&apos;activité :
+                {' '}
+                {student.currentProgress}
+                %
+              </Typography>
+              <StyledLinearProgress
+                variant="determinate"
+                color="secondary"
+                value={student.currentProgress}
+              />
+            </>
+          )}
         </CardContent>
       )}
-      <CardActions disableSpacing>
-        <IconButton aria-label="voir" onClick={toggleSeeScreen()}>
-          <Eye />
-        </IconButton>
+      <StyledCardActions disableSpacing>
+        <div>
+          <IconButton
+            aria-label="voir"
+            disabled={!student.screenView}
+            onClick={toggleSeeScreen()}
+          >
+            <Eye />
+          </IconButton>
+          <IconButton
+            aria-label="message"
+            onClick={displayMessages([student], updatePanel)}
+          >
+            <Email />
+          </IconButton>
+          <IconButton
+            aria-label={selected ? 'déselectionner' : 'selectionner'}
+            onClick={handleSelect}
+          >
+            {selected ? <Checked /> : <Unchecked />}
+          </IconButton>
+        </div>
         <IconButton
-          aria-label="message"
-          onClick={displayMessages([student], updatePanel)}
+          aria-label="retirer"
+          onClick={handleRemove}
         >
-          <Email />
+          <Remove />
         </IconButton>
-        <IconButton
-          aria-label={selected ? 'déselectionner' : 'selectionner'}
-          onClick={handleSelect}
-        >
-          {selected ? <Checked /> : <Unchecked />}
-        </IconButton>
-      </CardActions>
+      </StyledCardActions>
     </StyledCard>
   );
 };
