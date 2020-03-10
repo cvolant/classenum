@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Check from '@material-ui/icons/Check';
@@ -17,7 +18,9 @@ import { Typography } from '@material-ui/core';
 import usePanel from '../../hooks/usePanel';
 import Div from '../elements/Div';
 
-import { IStudent, IId } from '../../types/types';
+import { IStudent, IId, IActivity } from '../../types/types';
+
+import getFixtures from '../../fixtures';
 
 type IEditStudentProps = {
   handleAddStudent?: (student: Partial<IStudent> & { name: string }) => void;
@@ -40,6 +43,9 @@ const EditStudent: React.FC<IEditStudentProps> = ({
   const theme = useTheme();
   const { nextScreen } = usePanel();
   const [name, setName] = useState('');
+  const [activity, setActivity] = useState<IId | undefined>();
+  const [activities, setActivities] = useState<IActivity[] | undefined>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (student && handleEditStudent) {
@@ -47,7 +53,21 @@ const EditStudent: React.FC<IEditStudentProps> = ({
     }
   }, [student, handleEditStudent]);
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  useEffect(() => {
+    getFixtures(['activities'], ({ activities: foundActivities }) => {
+      setActivities(foundActivities);
+      if (student && handleEditStudent) {
+        setActivity(student.activities && student.activities[0]);
+      }
+      setLoading(false);
+    });
+  }, [/* onLoad only */]);
+
+  const handleChangeActivity: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setActivity(e.target.value);
+  };
+
+  const handleChangeName: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
   };
 
@@ -57,9 +77,12 @@ const EditStudent: React.FC<IEditStudentProps> = ({
       handleEditStudent({
         _id: student._id,
         name,
+        activities: (student.activities && student.activities[0]) === activity || !activity
+          ? student.activities || []
+          : [activity, ...student.activities || []],
       });
     } else if (name && handleAddStudent) {
-      handleAddStudent({ name });
+      handleAddStudent({ name, activities: activity ? [activity] : [] });
     }
     setName('');
   };
@@ -81,11 +104,25 @@ const EditStudent: React.FC<IEditStudentProps> = ({
           autoFocus
           label="Nom de l'étudiant"
           name="name"
-          onChange={handleChange}
+          onChange={handleChangeName}
           required
           value={name}
           variant="outlined"
         />
+        <TextField
+          select
+          disabled={!activities}
+          label={loading ? 'Chargement' : 'Activité'}
+          value={activity}
+          onChange={handleChangeActivity}
+          variant="outlined"
+        >
+          {(activities || []).map((option) => (
+            <MenuItem key={option._id} value={option._id}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
         <Button
           color="primary"
           startIcon={<Check />}

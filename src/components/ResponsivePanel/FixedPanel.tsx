@@ -12,6 +12,7 @@ const StyledPaper = styled(Paper)`
     color: ${theme.palette.text.secondary};
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     padding: ${theme.spacing(2)}px;
     width: 350px;
 

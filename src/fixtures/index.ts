@@ -26,7 +26,7 @@ const allFixtures: IFixtures = {
 const getFixtureAsync = <T extends keyof IFixtures>(
   fixtures: T[],
   callback: (res: Partial<IFixtures>) => void,
-  delay = 200,
+  delay = 1000,
 ): void => {
   setTimeout(() => {
     callback(fixtures.reduce(

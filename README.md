@@ -2,7 +2,7 @@
 
 ## Fixtures
 
-A set of fixtures is used to demonstrate this interface. They are loaded with an asynchronous function that simulate a server latency.
+A set of fixtures is used to demonstrate this interface. They are loaded with an asynchronous function that simulates a 1 second server response delay.
 The user data is considered already loaded.
 
 ## Available Scripts
