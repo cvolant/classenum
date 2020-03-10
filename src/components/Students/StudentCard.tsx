@@ -15,17 +15,19 @@ import Typography from '@material-ui/core/Typography';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
 import Checked from '@material-ui/icons/CheckBoxOutlined';
-import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
+import Edit from '@material-ui/icons/Edit';
 import Email from '@material-ui/icons/Email';
 import Eye from '@material-ui/icons/RemoveRedEye';
 import Help from '@material-ui/icons/Help';
 import Remove from '@material-ui/icons/RemoveCircleOutline';
+import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 import usePanel from '../../hooks/usePanel';
 import Avatar from '../elements/Avatar';
+import EditStudent from '../EditStudent/EditStudent';
 import { displayMessages } from '../Messages/Messages';
-import { IStudentStatus, IStudent } from '../../types/types';
+import { IStudentStatus, IStudent, IId } from '../../types/types';
 
 import { getActivity } from '../../fixtures';
 
@@ -41,6 +43,7 @@ export type IStudentCardProps = {
   student: IStudent;
   selected?: boolean;
   handleSelect: () => void;
+  handleEditStudent?: (student: Partial<IStudent> & { _id: IId }) => void;
   handleRemove: () => void;
 };
 
@@ -62,7 +65,7 @@ const statusChips: Record<IStudentStatus, IStatusChip> = {
   },
 };
 
-const StyledCard = styled(Card)<{ selected?: boolean }>`
+const StyledCard = styled(Card) <{ selected?: boolean }>`
   ${({ theme, selected }): string => `
     transition: ${theme.transitions.create('background')};
     ${(selected ? `
@@ -121,7 +124,7 @@ const StyledCardActions = styled(CardActions)`
 `;
 
 const StudentCard: React.FC<IStudentCardProps> = ({
-  student, selected, handleSelect, handleRemove,
+  student, selected, handleSelect, handleRemove, handleEditStudent,
 }) => {
   const history = useHistory();
   const { updatePanel } = usePanel();
@@ -133,7 +136,7 @@ const StudentCard: React.FC<IStudentCardProps> = ({
     if (isReady && typeof isReady !== 'boolean') {
       clearTimeout(isReady);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleSeeScreen = (toSee?: boolean) => (): void => {
@@ -151,6 +154,14 @@ const StudentCard: React.FC<IStudentCardProps> = ({
 
   const goToStudentPage = (): void => {
     history.push(`/${student._id}-${student.name.toLowerCase().replace(' ', '-')}`);
+  };
+
+  const handleEdit = (): void => {
+    updatePanel({
+      chapters: [<EditStudent key="edit-student" handleEditStudent={handleEditStudent} student={student} />],
+      screenIndex: 0,
+      open: true,
+    });
   };
 
   const activity = student.activities && student.activities[0]
@@ -240,12 +251,20 @@ const StudentCard: React.FC<IStudentCardProps> = ({
             {selected ? <Checked /> : <Unchecked />}
           </IconButton>
         </div>
-        <IconButton
-          aria-label="retirer"
-          onClick={handleRemove}
-        >
-          <Remove />
-        </IconButton>
+        <div>
+          <IconButton
+            aria-label="editer"
+            onClick={handleEdit}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            aria-label="retirer"
+            onClick={handleRemove}
+          >
+            <Remove />
+          </IconButton>
+        </div>
       </StyledCardActions>
     </StyledCard>
   );

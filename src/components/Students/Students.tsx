@@ -16,8 +16,9 @@ import ConfirmDialog from '../elements/ConfirmDialog';
 
 export type IStudentsProps = {
   loading?: boolean;
-  students?: IStudent[];
+  handleEditStudent: (student: Partial<IStudent> & { _id: IId }) => void;
   handleRemoveStudent: (student: IStudent) => void;
+  students?: IStudent[];
 };
 
 const StyledFab = styled(Fab)`
@@ -28,7 +29,9 @@ const StyledFab = styled(Fab)`
   `}
 `;
 
-const Students: React.FC<IStudentsProps> = ({ loading, students, handleRemoveStudent }) => {
+const Students: React.FC<IStudentsProps> = ({
+  loading, students, handleEditStudent, handleRemoveStudent,
+}) => {
   const [selected, setSelected] = useState<IId[]>([]);
   const [remove, setRemove] = useState<IStudent | undefined>(undefined);
   const { updatePanel } = usePanel();
@@ -71,6 +74,7 @@ const Students: React.FC<IStudentsProps> = ({ loading, students, handleRemoveStu
                 student={student}
                 selected={selected.includes(student._id)}
                 handleSelect={toggleSelect(student)}
+                handleEditStudent={handleEditStudent}
                 handleRemove={askConfirmRemove(student)}
               />
             </Grid>

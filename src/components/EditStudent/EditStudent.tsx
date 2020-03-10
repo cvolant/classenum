@@ -2,6 +2,7 @@ import React, {
   ChangeEventHandler,
   FormEventHandler,
   useState,
+  useEffect,
 } from 'react';
 
 import styled from 'styled-components';
@@ -16,10 +17,12 @@ import { Typography } from '@material-ui/core';
 import usePanel from '../../hooks/usePanel';
 import Div from '../elements/Div';
 
-import { IStudent } from '../../types/types';
+import { IStudent, IId } from '../../types/types';
 
-type IAddStudentProps = {
-  handleAddStudent: (student: Partial<IStudent> & { name: string }) => void;
+type IEditStudentProps = {
+  handleAddStudent?: (student: Partial<IStudent> & { name: string }) => void;
+  handleEditStudent?: (student: Partial<IStudent> & { _id: IId }) => void;
+  student?: IStudent;
 };
 
 const StyledForm = styled.form`
@@ -31,10 +34,18 @@ const StyledForm = styled.form`
   }
 `;
 
-const AddStudent: React.FC<IAddStudentProps> = ({ handleAddStudent }) => {
+const EditStudent: React.FC<IEditStudentProps> = ({
+  handleAddStudent, handleEditStudent, student,
+}) => {
   const theme = useTheme();
   const { nextScreen } = usePanel();
   const [name, setName] = useState('');
+
+  useEffect(() => {
+    if (student && handleEditStudent) {
+      setName(student.name);
+    }
+  }, [student, handleEditStudent]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
@@ -42,7 +53,12 @@ const AddStudent: React.FC<IAddStudentProps> = ({ handleAddStudent }) => {
 
   const handleSubmit: FormEventHandler = (e): void => {
     e.preventDefault();
-    if (name) {
+    if (name && student && handleEditStudent) {
+      handleEditStudent({
+        _id: student._id,
+        name,
+      });
+    } else if (name && handleAddStudent) {
       handleAddStudent({ name });
     }
     setName('');
@@ -55,7 +71,11 @@ const AddStudent: React.FC<IAddStudentProps> = ({ handleAddStudent }) => {
           <ChevronRight />
         </IconButton>
       </Div>
-      <Typography>Ajouter un étudiant ?</Typography>
+      <Typography align="center">
+        {student && handleEditStudent
+          ? `Modifier l'étudiant ${student.name}`
+          : 'Ajouter un étudiant ?'}
+      </Typography>
       <StyledForm noValidate onSubmit={handleSubmit}>
         <TextField
           autoFocus
@@ -79,4 +99,4 @@ const AddStudent: React.FC<IAddStudentProps> = ({ handleAddStudent }) => {
   );
 };
 
-export default AddStudent;
+export default EditStudent;

@@ -11,13 +11,13 @@ import Videocam from '@material-ui/icons/Videocam';
 
 import usePanel from '../hooks/usePanel';
 import usePageData from '../hooks/usePageData';
+import EditStudent from '../components/EditStudent/EditStudent';
 import MenuContent from '../components/MenuContent';
 import Messages, { displayMessages } from '../components/Messages/Messages';
 import Students from '../components/Students/Students';
-import { IMenuItem, IStudent } from '../types/types';
+import { IMenuItem, IStudent, IId } from '../types/types';
 
 import getFixtures from '../fixtures';
-import AddStudent from '../components/AddStudent/AddStudent';
 
 const ClassPage: React.FC = () => {
   const { updatePanel } = usePanel();
@@ -41,6 +41,21 @@ const ClassPage: React.FC = () => {
       },
     ]);
     updatePanel({ open: false, screenIndex: 1 });
+  };
+
+  const handleEditStudent = (studentToEdit: Partial<IStudent> & { _id: IId }): void => {
+    if (students) {
+      const studentIndex = students.findIndex((fiStudent) => fiStudent._id === studentToEdit._id);
+      setStudents([
+        ...students.slice(0, studentIndex),
+        {
+          ...students[studentIndex],
+          ...studentToEdit,
+        },
+        ...students.slice(studentIndex + 1),
+      ]);
+      updatePanel({ open: false, screenIndex: 1 });
+    }
   };
 
   useEffect(() => {
@@ -109,7 +124,7 @@ const ClassPage: React.FC = () => {
     if (updatePanel && menuItems && students) {
       updatePanel({
         chapters: [
-          <AddStudent key="add-student" handleAddStudent={handleAddStudent} />,
+          <EditStudent key="add-student" handleAddStudent={handleAddStudent} />,
           <MenuContent key="menu-content" menuItems={menuItems} />,
           <Messages key="messages" recipients={students} />,
         ],
@@ -119,7 +134,12 @@ const ClassPage: React.FC = () => {
   }, [menuItems, students]);
 
   return useMemo(() => (
-    <Students loading={loading} students={students} handleRemoveStudent={handleRemoveStudent} />
+    <Students
+      loading={loading}
+      handleRemoveStudent={handleRemoveStudent}
+      handleEditStudent={handleEditStudent}
+      students={students}
+    />
   ), [students, loading]);
 };
 export default ClassPage;
