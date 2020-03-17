@@ -28,7 +28,6 @@ module.exports = {
     '@typescript-eslint/indent': [2, 2],
     '@typescript-eslint/interface-name-prefix': [1, { prefixWithI: 'always' }],
     '@typescript-eslint/no-useless-constructor': 'error',
-    'react-hooks/exhaustive-deps': 0,
     'react/jsx-filename-extension': [2, { 'extensions': ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/prop-types': 0,
     'import/extensions': ['error', 'ignorePackages', { js: 'never', jsx: 'never', ts: 'never', tsx: 'never' }],

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -7,10 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Cancel from '@material-ui/icons/Cancel';
 import Check from '@material-ui/icons/Check';
@@ -23,9 +21,11 @@ import Remove from '@material-ui/icons/RemoveCircleOutline';
 import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
-import usePanel from '../../hooks/usePanel';
+import usePanel, { IPanelContext } from '../../hooks/usePanel';
 import Avatar from '../elements/Avatar';
 import EditStudent from '../EditStudent/EditStudent';
+import ScreenView from './ScreenView';
+import StudentProgress from './StudentProgress';
 import { displayMessages } from '../Messages/Messages';
 import { IStudentStatus, IStudent, IId } from '../../types/types';
 
@@ -81,32 +81,6 @@ const StyledCard = styled(Card) <{ selected?: boolean }>`
   `}
 `;
 
-const StyledDiv = styled.div<{ loading?: boolean }>`
-  pointer-events: none;
-  ${({ loading }): string => (loading ? `
-    background: black;
-    opacity: 0.2;
-    animation: 1s ease-in-out infinite alternate glow;
-
-    @keyframes glow {
-      from { opacity: 0.3 }
-      to { opacity: 0.6 }
-    }
-
-    & > * {
-      opacity: 0;
-    }
-  ` : '')}
-`;
-
-const StyledLinearProgress = styled(LinearProgress)`
-  ${({ theme }): string => `
-    background: ${theme.palette.secondary.light};
-    height: ${theme.spacing(1)}px;
-    border-radius: ${theme.spacing(0.5)}px;
-  `}
-`;
-
 // eslint-disable-next-line react/jsx-props-no-spreading, @typescript-eslint/no-unused-vars
 const StyledChip = styled(({ bgColor, ...props }) => <Chip {...props} />) <{ bgColor: IThemeColor }>`
   ${({ bgColor, theme }): string => `
@@ -127,33 +101,16 @@ const StudentCard: React.FC<IStudentCardProps> = ({
   student, selected, handleSelect, handleRemove, handleEditStudent,
 }) => {
   const history = useHistory();
-  const { updatePanel } = usePanel();
+  const { updatePanel } = usePanel() as IPanelContext;
   const [seeScreen, setSeeScreen] = useState(false);
-  const [isReady, setIsReady] = useState<boolean | number>(false);
   const statusChip = student.status ? statusChips[student.status] : undefined;
 
-  useEffect((): () => void => (): void => {
-    if (isReady && typeof isReady !== 'boolean') {
-      clearTimeout(isReady);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const toggleSeeScreen = (toSee?: boolean) => (): void => {
-    const newSeeScreen = typeof toSee === 'boolean' ? toSee : !seeScreen;
-
-    if (typeof isReady === 'number') {
-      clearTimeout(isReady);
-    }
-    setIsReady(newSeeScreen
-      ? setTimeout(() => {
-        setIsReady(true);
-      }, 6000) : false);
-    setSeeScreen(newSeeScreen);
+    setSeeScreen(typeof toSee === 'boolean' ? toSee : !seeScreen);
   };
 
   const goToStudentPage = (): void => {
-    history.push(`/${student._id}-${student.name.toLowerCase().replace(' ', '-')}`);
+    history.push(`/eleve/${student._id}-${student.name.toLowerCase().replace(' ', '-')}`);
   };
 
   const handleEdit = (): void => {
@@ -183,19 +140,7 @@ const StudentCard: React.FC<IStudentCardProps> = ({
           ) : undefined}
         />
       </CardActionArea>
-      {seeScreen ? (
-        <StyledDiv loading={isReady !== true}>
-          <CardMedia
-            allow="autoplay; encrypted-media;"
-            allowFullScreen
-            component="iframe"
-            frameBorder="0"
-            scrolling="no"
-            src={student.screenView}
-            title="vue de l'écran"
-          />
-        </StyledDiv>
-      ) : (
+      {seeScreen && student.screenView ? <ScreenView url={student.screenView} /> : (
         <CardContent>
           {activity
             ? (
@@ -212,21 +157,7 @@ const StudentCard: React.FC<IStudentCardProps> = ({
                 Pas d&apos;activité en cours
               </Typography>
             )}
-          {student.currentProgress && (
-            <>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Avancement dans l&apos;activité :
-                {' '}
-                {student.currentProgress}
-                %
-              </Typography>
-              <StyledLinearProgress
-                variant="determinate"
-                color="secondary"
-                value={student.currentProgress}
-              />
-            </>
-          )}
+          <StudentProgress progress={student.currentProgress} />
         </CardContent>
       )}
       <StyledCardActions disableSpacing>
