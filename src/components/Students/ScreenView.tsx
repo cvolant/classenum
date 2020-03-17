@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Div from '../elements/Div';
 
 export type IScreenViewProps = {
+  height?: string;
   url: string;
 };
 
@@ -29,7 +30,7 @@ const StyledDiv = styled(({ loading, ...props }) => <Div {...props} />)<{ loadin
   ` : '')}
 `;
 
-const ScreenView: React.FC<IScreenViewProps> = ({ url }) => {
+const ScreenView: React.FC<IScreenViewProps> = ({ height, url }) => {
   const [isReady, setIsReady] = useState<boolean | number>(false);
 
   useEffect((): () => void => {
@@ -41,7 +42,7 @@ const ScreenView: React.FC<IScreenViewProps> = ({ url }) => {
   }, []);
 
   return (
-    <StyledDiv loading={isReady !== true}>
+    <StyledDiv loading={isReady !== true} h={height}>
       <CardMedia
         allow="autoplay; encrypted-media;"
         allowFullScreen

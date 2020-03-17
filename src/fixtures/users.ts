@@ -28,7 +28,7 @@ export const users: IUser[] = [
     ],
     name: 'Todd Anderson',
     role: 'student',
-    screenView: 'https://www.youtube.com/embed/0rxiKoCv-98?autoplay=1&amp;start=538&amp;mute=1&amp;controls=0',
+    screenView: 'https://www.youtube.com/embed/UNagtW_FJBg?autoplay=1&amp;start=10&amp;mute=1&amp;controls=0',
     status: 'fine',
   },
   {

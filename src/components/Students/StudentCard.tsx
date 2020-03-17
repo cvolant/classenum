@@ -10,13 +10,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Cancel from '@material-ui/icons/Cancel';
-import Check from '@material-ui/icons/Check';
 import Checked from '@material-ui/icons/CheckBoxOutlined';
 import Edit from '@material-ui/icons/Edit';
 import Email from '@material-ui/icons/Email';
 import Eye from '@material-ui/icons/RemoveRedEye';
-import Help from '@material-ui/icons/Help';
 import Remove from '@material-ui/icons/RemoveCircleOutline';
 import Unchecked from '@material-ui/icons/CheckBoxOutlineBlank';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
@@ -25,9 +22,10 @@ import usePanel, { IPanelContext } from '../../hooks/usePanel';
 import Avatar from '../elements/Avatar';
 import EditStudent from '../EditStudent/EditStudent';
 import ScreenView from './ScreenView';
+import StatusChip from './StatusChip';
 import StudentProgress from './StudentProgress';
 import { displayMessages } from '../Messages/Messages';
-import { IStudentStatus, IStudent, IId } from '../../types/types';
+import { IStudent, IId } from '../../types/types';
 
 import { getActivity } from '../../fixtures';
 
@@ -45,24 +43,6 @@ export type IStudentCardProps = {
   handleSelect: () => void;
   handleEditStudent?: (student: Partial<IStudent> & { _id: IId }) => void;
   handleRemove: () => void;
-};
-
-const statusChips: Record<IStudentStatus, IStatusChip> = {
-  fine: {
-    status: 'Tout va bien',
-    Icon: Check,
-    color: 'success',
-  },
-  question: {
-    status: "J'ai une question",
-    Icon: Help,
-    color: 'info',
-  },
-  problem: {
-    status: "J'ai un problème",
-    Icon: Cancel,
-    color: 'error',
-  },
 };
 
 const StyledCard = styled(Card) <{ selected?: boolean }>`
@@ -103,7 +83,6 @@ const StudentCard: React.FC<IStudentCardProps> = ({
   const history = useHistory();
   const { updatePanel } = usePanel() as IPanelContext;
   const [seeScreen, setSeeScreen] = useState(false);
-  const statusChip = student.status ? statusChips[student.status] : undefined;
 
   const toggleSeeScreen = (toSee?: boolean) => (): void => {
     setSeeScreen(typeof toSee === 'boolean' ? toSee : !seeScreen);
@@ -131,12 +110,8 @@ const StudentCard: React.FC<IStudentCardProps> = ({
         <CardHeader
           avatar={<Avatar size="large" user={student} />}
           title={student.name}
-          subheader={statusChip ? (
-            <StyledChip
-              bgColor={statusChip.color}
-              icon={<statusChip.Icon />}
-              label={statusChip.status}
-            />
+          subheader={student.status ? (
+            <StatusChip status={student.status} />
           ) : undefined}
         />
       </CardActionArea>

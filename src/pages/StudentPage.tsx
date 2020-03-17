@@ -106,6 +106,7 @@ const StudentPage: React.FC<IStudentPageProps> = ({ id }) => {
           if (foundStudent) {
             updatePageData({
               title: foundStudent.name,
+              subtitle: '',
             });
           }
           if (foundActivities && foundStudent.activities) {
