@@ -43,7 +43,7 @@ const EditStudent: React.FC<IEditStudentProps> = ({
   const theme = useTheme();
   const { nextScreen } = usePanel() as IPanelContext;
   const [name, setName] = useState('');
-  const [activity, setActivity] = useState<IId | undefined>();
+  const [activity, setActivity] = useState<IId | ''>('');
   const [activities, setActivities] = useState<IActivity[] | undefined>();
   const [loading, setLoading] = useState(true);
 
@@ -59,7 +59,7 @@ const EditStudent: React.FC<IEditStudentProps> = ({
       if (isMounted) {
         setActivities(foundActivities);
         if (student && handleEditStudent) {
-          setActivity(student.activities && student.activities[0]);
+          setActivity((student.activities && student.activities[0]) || '');
         }
         setLoading(false);
       }
