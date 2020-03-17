@@ -15,7 +15,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import Check from '@material-ui/icons/Check';
 
 import { Typography } from '@material-ui/core';
-import usePanel from '../../hooks/usePanel';
+import usePanel, { IPanelContext } from '../../hooks/usePanel';
 import Div from '../elements/Div';
 
 import { IStudent, IId, IActivity } from '../../types/types';
@@ -41,7 +41,7 @@ const EditStudent: React.FC<IEditStudentProps> = ({
   handleAddStudent, handleEditStudent, student,
 }) => {
   const theme = useTheme();
-  const { nextScreen } = usePanel();
+  const { nextScreen } = usePanel() as IPanelContext;
   const [name, setName] = useState('');
   const [activity, setActivity] = useState<IId | undefined>();
   const [activities, setActivities] = useState<IActivity[] | undefined>();
@@ -54,14 +54,20 @@ const EditStudent: React.FC<IEditStudentProps> = ({
   }, [student, handleEditStudent]);
 
   useEffect(() => {
+    let isMounted = true;
     getFixtures(['activities'], ({ activities: foundActivities }) => {
-      setActivities(foundActivities);
-      if (student && handleEditStudent) {
-        setActivity(student.activities && student.activities[0]);
+      if (isMounted) {
+        setActivities(foundActivities);
+        if (student && handleEditStudent) {
+          setActivity(student.activities && student.activities[0]);
+        }
+        setLoading(false);
       }
-      setLoading(false);
     });
-  }, [/* onLoad only */]);
+    return (): void => {
+      isMounted = false;
+    };
+  }, [student, handleEditStudent]);
 
   const handleChangeActivity: ChangeEventHandler<HTMLInputElement> = (e) => {
     setActivity(e.target.value);

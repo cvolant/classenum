@@ -9,19 +9,19 @@ import Launch from '@material-ui/icons/Launch';
 import Settings from '@material-ui/icons/Settings';
 import Videocam from '@material-ui/icons/Videocam';
 
-import usePanel from '../hooks/usePanel';
-import usePageData from '../hooks/usePageData';
+import usePanel, { IPanelContext } from '../hooks/usePanel';
+import usePageData, { IPageDataContext } from '../hooks/usePageData';
 import EditStudent from '../components/EditStudent/EditStudent';
 import MenuContent from '../components/MenuContent';
 import Messages, { displayMessages } from '../components/Messages/Messages';
 import Students from '../components/Students/Students';
-import { IMenuItem, IStudent, IId } from '../types/types';
+import { IStudent, IId } from '../types/types';
 
 import getFixtures from '../fixtures';
 
 const ClassPage: React.FC = () => {
-  const { updatePanel } = usePanel();
-  const [pageData, updatePageData] = usePageData();
+  const { updatePanel } = usePanel() as IPanelContext;
+  const { pageData, updatePageData } = usePageData() as IPageDataContext;
   const [students, setStudents] = useState<IStudent[] | undefined>();
   const [loading, setLoading] = useState(true);
 
@@ -59,66 +59,71 @@ const ClassPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const newMenuItems: IMenuItem[] = [
-      {
-        Icon: Add,
-        label: 'Ajouter un élève',
-        labelVisible: true,
-        onClick: (): void => updatePanel({ screenIndex: 0 }),
-      },
-      {
-        disabled: !students,
-        Icon: Email,
-        label: 'Envoyer un message à tous',
-        labelVisible: true,
-        onClick: students ? displayMessages(students, updatePanel) : undefined,
-      },
-      {
-        disabled: true,
-        Icon: Videocam,
-        label: 'Parler à tous en visio',
-        labelVisible: true,
-      },
-      {
-        disabled: true,
-        label: 'Lancer une activité',
-        labelVisible: true,
-        Icon: Launch,
-      },
-      {
-        disabled: true,
-        label: 'Voir les statistiques',
-        labelVisible: true,
-        Icon: BarChart,
-      },
-      {
-        disabled: true,
-        label: 'Paramètres',
-        Icon: Settings,
-      },
-      {
-        disabled: true,
-        label: 'Aide',
-        Icon: Help,
-      },
-    ];
-    if (updatePageData) {
-      updatePageData({ menuItems: newMenuItems });
-    }
-  }, [students]);
+    updatePageData({
+      menuItems: [
+        {
+          Icon: Add,
+          label: 'Ajouter un élève',
+          labelVisible: true,
+          onClick: (): void => updatePanel({ screenIndex: 0 }),
+        },
+        {
+          disabled: !students,
+          Icon: Email,
+          label: 'Envoyer un message à tous',
+          labelVisible: true,
+          onClick: students ? displayMessages(students, updatePanel) : undefined,
+        },
+        {
+          disabled: true,
+          Icon: Videocam,
+          label: 'Parler à tous en visio',
+          labelVisible: true,
+        },
+        {
+          disabled: true,
+          label: 'Lancer une activité',
+          labelVisible: true,
+          Icon: Launch,
+        },
+        {
+          disabled: true,
+          label: 'Voir les statistiques',
+          labelVisible: true,
+          Icon: BarChart,
+        },
+        {
+          disabled: true,
+          label: 'Paramètres',
+          Icon: Settings,
+        },
+        {
+          disabled: true,
+          label: 'Aide',
+          Icon: Help,
+        },
+      ],
+    });
+  }, [students, updatePageData]);
 
   useEffect(() => {
+    let isMounted = true;
     getFixtures(['session', 'users'], ({ session, users }) => {
-      if (updatePageData && session) {
-        updatePageData({
-          title: session.name,
-          subtitle: session.subject,
-        });
+      if (isMounted) {
+        if (session) {
+          updatePageData({
+            title: session.name,
+            subtitle: session.subject,
+          });
+        }
+        setStudents(users?.filter((user) => user.role === 'student') as IStudent[]);
+        setLoading(false);
       }
-      setStudents(users?.filter((user) => user.role === 'student') as IStudent[]);
-      setLoading(false);
     });
-  }, [/* onLoad only */]);
+    return (): void => {
+      isMounted = false;
+    };
+  }, [updatePageData]);
 
   useEffect(() => {
     if (updatePanel && menuItems && students) {

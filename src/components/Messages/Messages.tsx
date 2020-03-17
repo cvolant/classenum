@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Send from '@material-ui/icons/Send';
 
-import usePanel, { IPanel } from '../../hooks/usePanel';
+import usePanel, { IPanel, IPanelContext } from '../../hooks/usePanel';
 import Div from '../elements/Div';
 import MessageList from './MessageList';
 
@@ -43,17 +43,23 @@ const StyledTextField = styled(TextField)`
 
 const Messages: React.FC<IMessagesProps> = ({ recipients }) => {
   const theme = useTheme();
-  const { updatePanel } = usePanel();
+  const { updatePanel } = usePanel() as IPanelContext;
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<IMessage[] | undefined>();
 
   useEffect(() => {
+    let isMounted = true;
     getFixtures(['messages'], ({ messages: foundMessages }) => {
-      setMessages(foundMessages);
-      setLoading(false);
+      if (isMounted) {
+        setMessages(foundMessages);
+        setLoading(false);
+      }
     });
-  }, [/* onLoad only */]);
+    return (): void => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setNewMessage(e.target.value);

@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   Reducer,
   useReducer,
+  useCallback,
 } from 'react';
 
 export type IPanel = {
@@ -29,17 +30,9 @@ type IPanelProviderProps = {
   children: ReactNode;
 };
 
-const PanelContext = createContext<IPanelContext>({
-  panel: { chapters: [] },
-  updatePanel: () => { /*  */ },
-  replacePanel: () => { /*  */ },
-  previousScreen: () => { /*  */ },
-  nextScreen: () => { /*  */ },
-  togglePanel: () => { /*  */ },
-  dispatchPanel: () => { /*  */ },
-});
+const PanelContext = createContext<IPanelContext | undefined>(undefined);
 
-const usePanel = (): IPanelContext => useContext(PanelContext);
+const usePanel = (): IPanelContext | undefined => useContext(PanelContext);
 
 const PanelProvider: React.FC<IPanelProviderProps> = ({ children }) => {
   const panelReducer: Reducer<IPanel, IPanelAction> = (panelState, { type, payload }) => {
@@ -79,25 +72,25 @@ const PanelProvider: React.FC<IPanelProviderProps> = ({ children }) => {
   };
   const [panel, dispatchPanel] = useReducer(panelReducer, { chapters: [] });
 
-  const updatePanel = (payload: Partial<IPanel>): void => {
+  const updatePanel = useCallback((payload: Partial<IPanel>): void => {
     dispatchPanel({ type: 'update', payload });
-  };
+  }, []);
 
-  const replacePanel = (payload: Partial<IPanel>): void => {
+  const replacePanel = useCallback((payload: Partial<IPanel>): void => {
     dispatchPanel({ type: 'replace', payload });
-  };
+  }, []);
 
-  const previousScreen = (): void => {
+  const previousScreen = useCallback((): void => {
     dispatchPanel({ type: 'previous' });
-  };
+  }, []);
 
-  const nextScreen = (): void => {
+  const nextScreen = useCallback((): void => {
     dispatchPanel({ type: 'next' });
-  };
+  }, []);
 
-  const togglePanel = (toOpen?: boolean): void => {
+  const togglePanel = useCallback((toOpen?: boolean): void => {
     dispatchPanel({ type: 'toggle', payload: { open: toOpen } });
-  };
+  }, []);
 
   return (
     <PanelContext.Provider value={{

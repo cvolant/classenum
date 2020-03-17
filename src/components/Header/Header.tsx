@@ -10,7 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 
 import useScreen from '../../hooks/useScreen';
-import usePageData from '../../hooks/usePageData';
+import usePageData, { IPageDataContext } from '../../hooks/usePageData';
 import useUser from '../../hooks/useUser';
 import Div from '../elements/Div';
 import Logo from '../elements/Logo';
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
   const user = useUser();
   const screen = useScreen();
   const history = useHistory();
-  const [{ title, subtitle }] = usePageData();
+  const { pageData: { title, subtitle } } = usePageData() as IPageDataContext;
 
   const [anchorEl, setAnchorEl] = useState<MouseEvent['currentTarget'] | null>(null);
   const open = Boolean(anchorEl);

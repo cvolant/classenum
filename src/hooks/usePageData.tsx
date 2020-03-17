@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   ReactNode,
+  useCallback,
 } from 'react';
 import { IMenuItem } from '../types/types';
 
@@ -11,27 +12,30 @@ export type IPageData = {
   subtitle?: string;
   menuItems?: IMenuItem[];
 };
-type IPageDataContext = [IPageData, IPageDataUpdater | undefined];
+export type IPageDataContext = {
+  pageData: IPageData;
+  updatePageData: IPageDataUpdater;
+};
 type IPageDataProviderProps = {
   children: ReactNode;
 };
 export type IPageDataUpdater = (updates: IPageData) => void;
 
-const PageDataContext = createContext<IPageDataContext>([{}, undefined]);
+const PageDataContext = createContext<IPageDataContext | undefined>(undefined);
 
-const usePageData = (): IPageDataContext => useContext(PageDataContext);
+const usePageData = (): IPageDataContext | undefined => useContext(PageDataContext);
 
 const PageDataProvider: React.FC<IPageDataProviderProps> = ({ children }) => {
   const [pageData, setPageData] = useState({});
-  const updatePageData: IPageDataUpdater = (updates) => {
-    setPageData({
-      ...pageData,
+  const updatePageData: IPageDataUpdater = useCallback((updates) => {
+    setPageData((formerPageData) => ({
+      ...formerPageData,
       ...updates,
-    });
-  };
+    }));
+  }, []);
 
   return (
-    <PageDataContext.Provider value={[pageData, updatePageData]}>
+    <PageDataContext.Provider value={{ pageData, updatePageData }}>
       {children}
     </PageDataContext.Provider>
   );

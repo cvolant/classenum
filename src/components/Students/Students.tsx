@@ -5,7 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import Email from '@material-ui/icons/Email';
 
-import usePanel from '../../hooks/usePanel';
+import usePanel, { IPanelContext } from '../../hooks/usePanel';
 import LoadingCard from './LoadingCard';
 import { displayMessages } from '../Messages/Messages';
 import StudentCard from './StudentCard';
@@ -34,7 +34,7 @@ const Students: React.FC<IStudentsProps> = ({
 }) => {
   const [selected, setSelected] = useState<IId[]>([]);
   const [remove, setRemove] = useState<IStudent | undefined>(undefined);
-  const { updatePanel } = usePanel();
+  const { updatePanel } = usePanel() as IPanelContext;
 
   const toggleSelect = ({ _id }: { _id: IId }) => (): void => {
     const index = selected.indexOf(_id);

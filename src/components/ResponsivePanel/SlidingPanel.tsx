@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
-import usePanel from '../../hooks/usePanel';
+import usePanel, { IPanelContext } from '../../hooks/usePanel';
 import SlidingPanelButton from './SlidingPanelButton';
 
 type ISlidingMenuProps = {
@@ -26,7 +26,7 @@ const StyledSwipeableDrawer = styled(SwipeableDrawer)`
 `;
 
 const SlidingPanel: React.FC<ISlidingMenuProps> = ({ children }) => {
-  const { togglePanel, panel: { open } } = usePanel();
+  const { togglePanel, panel: { open } } = usePanel() as IPanelContext;
 
   const toggleMenu = (toOpen?: boolean) => (): void => togglePanel(toOpen);
 
